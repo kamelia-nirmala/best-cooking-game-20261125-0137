@@ -18,13 +18,41 @@ function recipeItems(recipe) {
 
 export function setupShot(world, name) {
   switch (name) {
-    case 'title': {
+case 'assembly': {
       world.reset();
-      world.elapsed = 0;
-      world.timeLeft = 150;
-      world.level = 1;
-      world.chef.x = 640;
-      world.chef.y = 520;
+      world.spawnOrder();
+      world.spawnOrder();
+      world.elapsed = 80;
+      world.timeLeft = 70;
+      world.level = 3;
+      world.score = 300;
+      world.coins = 300;
+      world.combo = 2;
+      world.bestCombo = 3;
+      world.served = 3;
+
+      world.chopSlot = {
+        item: makeItem('tomato'),
+        t: 1.0,
+        done: false,
+      };
+
+      if (!world.grillSlots[0]) {
+        world.grillSlots[0] = { item: null, t: 0, burnt: false };
+      }
+      world.grillSlots[0].item = makeItem('patty');
+      world.grillSlots[0].t = 4;
+      world.grillSlots[0].burnt = false;
+
+      world.plate = [makeItem('bun'), makeItem('patty', true)];
+
+      world.tray = [makeItem('lettuce', false, true)];
+
+      world.chef.x = 620;
+      world.chef.y = 355;
+
+      world.message = '';
+      world.messageT = 0;
       break;
     }
 
@@ -117,4 +145,4 @@ export function setupShot(world, name) {
   return world;
 }
 
-export const SHOT_NAMES = ['title', 'play', 'serve', 'end'];
+export const SHOT_NAMES = ['play', 'assembly', 'serve', 'end'];
