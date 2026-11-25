@@ -240,8 +240,8 @@ function drawOrderCard(ctx, order, x, y, w, h) {
   drawText(ctx, order.recipe.name, x + 10, y + 17, 15, '#f2f5ff', 'left');
   drawText(ctx, formatTime(order.patience), x + w - 10, y + 17, 13, textColor, 'right');
   order.recipe.items.forEach((it, i) => {
-    const ix = x + 18 + i * 30;
-    drawText(ctx, EMOJI[it.id], ix, y + 42, 20, '#ffffff', 'center');
+    const ix = x + 18 + i * 34;
+    drawText(ctx, EMOJI[it.id], ix, y + 42, 24, '#ffffff', 'center');
     if (it.chopped) drawText(ctx, 'C', ix - 8, y + 26, 8, '#7fd3ff', 'center');
     if (it.cooked) drawText(ctx, '🔥', ix + 8, y + 26, 8, '#ff9a3c', 'center');
   });
@@ -269,7 +269,7 @@ function drawBins(ctx) {
     const bx = b.x + pad + i * (bw + gap);
     const by = b.y + pad;
     drawBox(ctx, bx, by, bw, bh, '#2f3852', '#4a5470');
-    drawText(ctx, EMOJI[id], bx + bw / 2, by + 22, 16, '#ffffff', 'center');
+    drawText(ctx, EMOJI[id], bx + bw / 2, by + 22, 20, '#ffffff', 'center');
     drawText(ctx, INGREDIENTS.find((ing) => ing.id === id).label, bx + bw / 2, by + bh - 8, 11, '#dfe6f5', 'center');
   });
 }
@@ -368,25 +368,25 @@ function drawChef(ctx, world) {
   const x = world.chef.x;
   const y = world.chef.y;
   ctx.beginPath();
-  ctx.arc(x, y - 26, 12, 0, Math.PI * 2);
+  ctx.arc(x, y - 26, 14, 0, Math.PI * 2);
   ctx.fillStyle = '#ffffff';
   ctx.fill();
   ctx.strokeStyle = '#c9c9c9';
   ctx.lineWidth = 2;
   ctx.stroke();
   ctx.beginPath();
-  ctx.arc(x, y - 8, 10, 0, Math.PI * 2);
+  ctx.arc(x, y - 8, 12, 0, Math.PI * 2);
   ctx.fillStyle = '#f2c48d';
   ctx.fill();
   ctx.strokeStyle = '#c9955f';
   ctx.lineWidth = 2;
   ctx.stroke();
-  drawBox(ctx, x - 14, y + 2, 28, 30, '#e05a4f', '#a33b33');
-  ctx.font = '16px serif';
+  drawBox(ctx, x - 17, y + 2, 34, 36, '#e05a4f', '#a33b33');
+  ctx.font = '20px serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   world.tray.forEach((item, i) => {
-    ctx.fillText(EMOJI[item.id] || '❓', x - ((world.tray.length - 1) * 20) / 2 + i * 20, y + 42);
+    ctx.fillText(EMOJI[item.id] || '❓', x - ((world.tray.length - 1) * 24) / 2 + i * 24, y + 48);
   });
 }
 
