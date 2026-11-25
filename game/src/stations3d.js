@@ -197,7 +197,7 @@ export function buildStations(scene) {
   const plateLayer1 = mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.12, 20), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.7 }), 0, 1.34, 0, plate.group); plateLayer1.visible = false;
   const plateLayer2 = mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.12, 20), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.7 }), 0, 1.46, 0, plate.group); plateLayer2.visible = false;
   const plateLayer3 = mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.12, 20), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.7 }), 0, 1.58, 0, plate.group); plateLayer3.visible = false;
-  badge(plate.group, 0, 2.6, 0, 'PIRING');
+  const plateBadge = badge(plate.group, 0, 2.6, 0, 'PIRING');
 
   // ---- SERVE ----
   const serve = stationGroup(scene, RECTS.serve);
@@ -214,7 +214,7 @@ export function buildStations(scene) {
   box(0.12, 1.6, 0.12, -serve.width3d / 2 + 0.2, 1.9, -serve.depth3d / 2 + 0.1, darkMetal, serve.group);
   box(0.12, 1.6, 0.12, serve.width3d / 2 - 0.2, 1.9, -serve.depth3d / 2 + 0.1, darkMetal, serve.group);
   box(serve.width3d, 0.12, 0.12, 0, 2.7, -serve.depth3d / 2 + 0.1, darkMetal, serve.group);
-  badge(serve.group, 0, 3.2, 0, 'SAJI');
+  const serveBadge = badge(serve.group, 0, 3.2, 0, 'SAJI');
 
   // ---- TRASH ----
   const trash = stationGroup(scene, RECTS.trash);
@@ -224,9 +224,11 @@ export function buildStations(scene) {
   lid.rotation.z = 0.25;
   lid.rotation.x = 0.1;
   mesh(new THREE.SphereGeometry(0.16, 14, 10), white, 0.5, 1.25, 0.3, trash.group);
-  badge(trash.group, 0, 2.2, 0, 'SAMPAH');
+  const trashBadge = badge(trash.group, 0, 2.2, 0, 'SAMPAH');
 
   function update(world, frame) {
+    const showLabels = !(world && (world.screen === 'recipes' || world.screen === 'over'));
+    for (const b of [chopBadge, grillBadge, plateBadge, serveBadge, trashBadge]) { if (b && b.sprite) b.sprite.visible = showLabels; }
     const slots = (world && world.grillSlots) || [];
     const pulse = 1.6 + 0.4 * Math.sin(frame * 0.08);
     const glows = [glowL, glowR];
