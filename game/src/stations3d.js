@@ -101,6 +101,11 @@ export function buildStations(scene) {
   box(1.6, 0.08, 1.1, -0.4, 1.15, 0, boardMat, chop.group);
   const knife = box(0.9, 0.05, 0.16, 0.8, 1.15, 0.3, steel, chop.group);
   knife.rotation.y = 0.5;
+  const chopVeg = new THREE.Mesh(new THREE.SphereGeometry(0.32, 12, 10), new THREE.MeshStandardMaterial({ color: 0x7bc47f, roughness: 0.8 }));
+  chopVeg.scale.set(1, 0.55, 1);
+  chopVeg.position.set(-0.4, 1.28, 0);
+  chopVeg.visible = false;
+  chop.group.add(chopVeg);
   const chopBadge = badge(chop.group, 0, 2.6, 0, 'POTONG');
 
   // ---- GRILL ----
@@ -115,6 +120,16 @@ export function buildStations(scene) {
   const glowMatR = new THREE.MeshStandardMaterial({ color: 0xff6a00, emissive: 0xff5a00, emissiveIntensity: 0 });
   const glowL = cyl(0.5, 0.5, 0.05, -0.9, 1.18, 0, glowMatL, grill.group);
   const glowR = cyl(0.5, 0.5, 0.05, 0.9, 1.18, 0, glowMatR, grill.group);
+  const pattyMat = new THREE.MeshStandardMaterial({ color: 0x8a4a2a, roughness: 0.75 });
+  const pattyMatCooked = new THREE.MeshStandardMaterial({ color: 0x5a2e18, roughness: 0.7 });
+  const pattyL = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.14, 14), pattyMat);
+  pattyL.position.set(-0.9, 1.28, 0);
+  pattyL.visible = false;
+  grill.group.add(pattyL);
+  const pattyR = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.14, 14), pattyMat);
+  pattyR.position.set(0.9, 1.28, 0);
+  pattyR.visible = false;
+  grill.group.add(pattyR);
   cyl(0.12, 0.12, 0.1, -0.6, 1.1, grill.depth3d / 2 + 0.05, steel, grill.group);
   cyl(0.12, 0.12, 0.1, 0.6, 1.1, grill.depth3d / 2 + 0.05, steel, grill.group);
   const grillBadge = badge(grill.group, 0, 2.6, 0, 'PANGGANG');
@@ -190,6 +205,16 @@ export function buildStations(scene) {
     } else {
       setBadge(grillBadge, 'PANGGANG');
     }
+
+    // Visible food on the stations.
+    const slotL = world.grillSlots ? world.grillSlots[0] : null;
+    const slotR = world.grillSlots ? world.grillSlots[1] : null;
+    if (slotL && slotL.item) { pattyL.visible = true; pattyL.material = (slotL.t >= 4 || slotL.burnt) ? pattyMatCooked : pattyMat; } else { pattyL.visible = false; }
+    if (slotR && slotR.item) { pattyR.visible = true; pattyR.material = (slotR.t >= 4 || slotR.burnt) ? pattyMatCooked : pattyMat; } else { pattyR.visible = false; }
+    if (world.chopSlot && world.chopSlot.item) {
+      chopVeg.visible = true;
+      chopVeg.material.color.setHex(world.chopSlot.item.id === 'tomato' ? 0xe2543e : 0x7bc47f);
+    } else { chopVeg.visible = false; }
   }
 
   return { update };
