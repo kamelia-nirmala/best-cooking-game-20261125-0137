@@ -51,6 +51,23 @@ case 'assembly': {
       world.chef.x = 620;
       world.chef.y = 355;
 
+      if (world.orders[0]) {
+        world.orders[0].patience = 40;
+        world.orders[0].maxPatience = 50;
+      }
+      if (world.orders[1]) {
+        world.orders[1].patience = 22;
+        world.orders[1].maxPatience = 50;
+      }
+      if (world.orders[2]) {
+        world.orders[2].patience = 10;
+        world.orders[2].maxPatience = 50;
+      }
+      if (world.orders[3]) {
+        world.orders[3].patience = 4;
+        world.orders[3].maxPatience = 50;
+      }
+
       world.message = '';
       world.messageT = 0;
       break;
@@ -63,11 +80,11 @@ case 'assembly': {
       world.elapsed = 65;
       world.timeLeft = 85;
       world.level = 3;
-      world.score = 240;
-      world.coins = 240;
-      world.combo = 3;
-      world.bestCombo = 3;
-      world.served = 2;
+      world.score = 420;
+      world.coins = 420;
+      world.combo = 5;
+      world.bestCombo = 5;
+      world.served = 4;
 
       world.chopSlot = {
         item: makeItem('lettuce'),
@@ -79,13 +96,32 @@ case 'assembly': {
         world.grillSlots[0] = { item: null, t: 0, burnt: false };
       }
       world.grillSlots[0].item = makeItem('patty');
-      world.grillSlots[0].t = 2;
+      world.grillSlots[0].t = 4;
       world.grillSlots[0].burnt = false;
 
-      world.tray = [makeItem('bun'), makeItem('patty', true)];
+      world.plate = [makeItem('bun'), makeItem('patty', true), makeItem('lettuce', false, true)];
+
+      world.tray = [makeItem('bun')];
 
       world.chef.x = 390;
       world.chef.y = 355;
+
+      if (world.orders[0]) {
+        world.orders[0].patience = 45;
+        world.orders[0].maxPatience = 50;
+      }
+      if (world.orders[1]) {
+        world.orders[1].patience = 24;
+        world.orders[1].maxPatience = 50;
+      }
+      if (world.orders[2]) {
+        world.orders[2].patience = 11;
+        world.orders[2].maxPatience = 50;
+      }
+      if (world.orders[3]) {
+        world.orders[3].patience = 5;
+        world.orders[3].maxPatience = 50;
+      }
 
       world.message = '';
       world.messageT = 0;
@@ -96,6 +132,24 @@ case 'assembly': {
       world.reset();
       world.spawnOrder();
       world.spawnOrder();
+
+      if (world.orders[0]) {
+        world.orders[0].patience = 38;
+        world.orders[0].maxPatience = 50;
+      }
+      if (world.orders[1]) {
+        world.orders[1].patience = 20;
+        world.orders[1].maxPatience = 50;
+      }
+      if (world.orders[2]) {
+        world.orders[2].patience = 9;
+        world.orders[2].maxPatience = 50;
+      }
+      if (world.orders[3]) {
+        world.orders[3].patience = 3;
+        world.orders[3].maxPatience = 50;
+      }
+
       world.elapsed = 100;
       world.timeLeft = 50;
       world.level = 4;
@@ -120,21 +174,58 @@ case 'assembly': {
       break;
     }
 
-    case 'end': {
+    case 'rush':
       world.reset();
-      world.elapsed = 150;
-      world.timeLeft = 0;
+      world.spawnOrder();
+      world.spawnOrder();
+
+      world.elapsed = 140;
+      world.timeLeft = 10;
       world.level = 5;
-      world.score = 680;
-      world.coins = 680;
-      world.served = 6;
-      world.failed = 1;
+      world.score = 650;
+      world.coins = 650;
+      world.combo = 5;
       world.bestCombo = 5;
-      world.over = true;
-      world.message = 'Shift over!';
-      world.messageT = 3;
+      world.served = 6;
+      world.failed = 0;
+
+      world.chopSlot = {
+        item: makeItem('lettuce'),
+        t: 2.0,
+        done: false,
+      };
+
+      if (!world.grillSlots[0]) {
+        world.grillSlots[0] = { item: null, t: 0, burnt: false };
+      }
+      world.grillSlots[0].item = makeItem('patty');
+      world.grillSlots[0].t = 7;
+      world.grillSlots[0].burnt = false;
+
+      world.plate = [makeItem('bun'), makeItem('patty', true)];
+      world.tray = [makeItem('lettuce', false, true)];
+      world.chef = { x: 390, y: 355 };
+
+      if (world.orders[0]) {
+        world.orders[0].patience = 8;
+        world.orders[0].maxPatience = 50;
+      }
+      if (world.orders[1]) {
+        world.orders[1].patience = 6;
+        world.orders[1].maxPatience = 50;
+      }
+      if (world.orders[2]) {
+        world.orders[2].patience = 4;
+        world.orders[2].maxPatience = 50;
+      }
+      if (world.orders[3]) {
+        world.orders[3].patience = 2;
+        world.orders[3].maxPatience = 50;
+      }
+
+      world.message = '';
+      world.messageT = 0;
       break;
-    }
 
     default: {
       world.reset();
@@ -145,4 +236,4 @@ case 'assembly': {
   return world;
 }
 
-export const SHOT_NAMES = ['play', 'assembly', 'serve', 'end'];
+export const SHOT_NAMES = ['play', 'assembly', 'serve', 'rush'];
