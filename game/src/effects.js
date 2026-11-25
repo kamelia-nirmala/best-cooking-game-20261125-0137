@@ -25,7 +25,7 @@ export function buildEffects(scene) {
   const grillZ = -0.56;
 
   const puffs = [];
-  for (let i = 0; i < 14; i++) {
+  for (let i = 0; i < 22; i++) {
     const material = new THREE.SpriteMaterial({
       map: steamTexture,
       transparent: true,
@@ -35,7 +35,7 @@ export function buildEffects(scene) {
     const sprite = new THREE.Sprite(material);
     const burner = i % 2;
     sprite.position.set(burnerX[burner], 1.3, grillZ);
-    sprite.scale.set(0.7, 0.7, 1);
+    sprite.scale.set(1.0, 1.0, 1);
     scene.add(sprite);
     puffs.push({
       sprite: sprite,
@@ -85,11 +85,11 @@ export function buildEffects(scene) {
 
       const cycle = (frame * 0.02 + puff.phase) % 1;
       const x = burnerX[puff.burner] + Math.sin(frame * 0.03 + puff.phase * 6) * 0.25;
-      const y = 1.3 + cycle * 2.2;
-      const size = 0.5 + cycle * 0.9;
+      const y = 1.3 + cycle * 2.6;
+      const size = 0.9 + cycle * 1.3;
       const opacity = cycle < 0.2
-        ? (cycle / 0.2) * 0.45
-        : ((1 - cycle) / 0.8) * 0.45;
+        ? (cycle / 0.2) * 0.75
+        : ((1 - cycle) / 0.8) * 0.75;
 
       puff.sprite.position.set(x, y, grillZ);
       puff.sprite.scale.set(size, size, 1);
