@@ -111,7 +111,7 @@ export function draw(ctx, world, screen, best) {
   const rawTime = Number(wd.timeLeft);
   const timeLeft = Number.isFinite(rawTime) ? Math.max(0, rawTime) : 0;
   const timeLow = timeLeft <= 10;
-  const timerText = timeLow ? 'TIME LOW!' : formatTime(timeLeft);
+  const timerText = timeLow && screen !== SCREEN_OVER ? 'TIME LOW!' : formatTime(timeLeft);
 
   const bestNumber = Number(best);
   const worldBestNumber = Number(wd.best);
@@ -200,20 +200,20 @@ function drawOrderCard(ctx, order, x, y, w, h) {
   drawText(ctx, formatTime(order.patience), x + w - 10, y + 14, 13, textColor, 'right');
   order.recipe.items.forEach((it, i) => {
     const ix = x + 18 + i * 34;
-    drawText(ctx, EMOJI[it.id], ix, y + 36, 24, '#ffffff', 'center');
+    drawText(ctx, EMOJI[it.id], ix, y + 38, 24, '#ffffff', 'center');
     if (it.chopped) drawText(ctx, 'C', ix - 8, y + 26, 8, '#7fd3ff', 'center');
     if (it.cooked) drawText(ctx, '🔥', ix + 8, y + 26, 8, '#ff9a3c', 'center');
   });
-  drawBox(ctx, x + 10, y + h - 12, w - 20, 6, '#141a26', '#3a4256');
-  drawBox(ctx, x + 10, y + h - 12, Math.max(2, (w - 20) * p), 6, barColor, null);
+  drawBox(ctx, x + 10, y + h - 10, w - 20, 6, '#141a26', '#3a4256');
+  drawBox(ctx, x + 10, y + h - 10, Math.max(2, (w - 20) * p), 6, barColor, null);
 }
 
 function drawOrderBoard(ctx, world) {
-  drawBox(ctx, 40, 86, 1200, 70, '#1b2233', '#3a4256');
+  drawBox(ctx, 40, 86, 1200, 78, '#1b2233', '#3a4256');
   drawText(ctx, 'ORDERS', 52, 138, 14, '#8fa1c7', 'left');
   const n = Math.min(4, world.orders.length);
   for (let i = 0; i < n; i++) {
-    drawOrderCard(ctx, world.orders[i], 150 + i * 270, 94, 250, 52);
+    drawOrderCard(ctx, world.orders[i], 150 + i * 270, 94, 250, 62);
   }
 }
 
@@ -595,28 +595,35 @@ function drawChef(ctx, world) {
 
 function drawMessage(ctx, world) {
   if (world.messageT <= 0) return;
-  const w = 620;
-  const h = 44;
+  const w = 320;
+  const h = 32;
   const x = (CANVAS_W - w) / 2;
-  // Sit in the empty middle-floor gap between the station rows so it never covers the serve panel or the plate
-  const y = 463;
+  const y = 168;
   ctx.globalAlpha = Math.min(1, world.messageT / 0.5);
-  drawBox(ctx, x, y, w, h, 'rgba(0,0,0,0.82)', '#f0a63c');
-  drawText(ctx, world.message, CANVAS_W / 2, y + h / 2, 18, '#ffe9c9', 'center');
+  drawBox(ctx, x, y, w, h, 'rgba(0,0,0,0.75)', '#f0a63c');
+  drawText(ctx, world.message, CANVAS_W / 2, y + h / 2, 16, '#ffe9c9', 'center');
   ctx.globalAlpha = 1;
 }
 
 function drawScorePopup(ctx, world) {
   if (!world.message || world.message.indexOf('Served!') !== 0 || world.messageT <= 0) return;
   const text = world.message.replace('Served! ', '');
-  const y = 580 - (1.5 - world.messageT) * 40;
+  const y = 440 - (1.5 - world.messageT) * 50;
+  ctx.save();
   ctx.globalAlpha = Math.min(1, world.messageT / 0.5);
-  drawText(ctx, text, 975, y, 24, '#ffd166', 'center');
-  ctx.globalAlpha = 1;
+  ctx.font = '700 28px ' + FONT_FAMILY;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.lineWidth = 5;
+  ctx.strokeStyle = '#2a2018';
+  ctx.strokeText(text, 975, y);
+  ctx.fillStyle = '#ffd166';
+  ctx.fillText(text, 975, y);
+  ctx.restore();
 }
 
 function drawFooter(ctx) {
-  drawText(ctx, 'WASD / arrows move, E use, P pause, M mute, Enter start', CANVAS_W / 2, CANVAS_H - 24, 13, '#9c9384', 'center');
+  drawText(ctx, 'WASD / arrows move, E use, P pause, M mute, Enter start', CANVAS_W / 2, CANVAS_H - 24, 14, '#4a3524', 'center');
 }
 
 function drawStationLabels(ctx) {
@@ -865,7 +872,7 @@ export function drawRecipeBook(ctx, world) {
     'cheese-melt': '🧀',
     'garden-salad': '🥗',
     'sunny-omelette': '🍳',
-    'double-stacker': '🍔',
+    'double-stacker': '🥪',
   };
   const ITEM_LABEL = {
     bun: 'Roti',
@@ -876,15 +883,15 @@ export function drawRecipeBook(ctx, world) {
     egg: 'Telur',
   };
   const DISH_DESC = {
-    'sizzle-burger': 'Burger sambal pedas, patty panggang.',
+    'sizzle-burger': 'Burger klasik, patty panggang.',
     'cheese-melt': 'Burger keju leleh yang gurih.',
     'garden-salad': 'Salad segar dari kebun.',
     'sunny-omelette': 'Omelet telur yang mengenyangkan.',
     'double-stacker': 'Burger ganda untuk yang lapar.',
   };
-  ctx.fillStyle = 'rgba(0,0,0,0.35)';
+  ctx.fillStyle = 'rgba(0,0,0,0.30)';
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-  drawBox(ctx, 90, 70, 1100, 580, '#2c2118', '#c97b3f');
+  drawBox(ctx, 90, 70, 1100, 580, '#6b4a2f', '#c97b3f');
 
   ctx.save();
   ctx.strokeStyle = '#ffd166';
@@ -907,7 +914,7 @@ export function drawRecipeBook(ctx, world) {
   for (let i = 0; i < RECIPES.length; i++) {
     const recipe = RECIPES[i];
     const rowY = 185 + i * 90;
-    drawBox(ctx, 120, rowY, 1040, 84, '#3a2c20', '#6b4a33');
+    drawBox(ctx, 120, rowY, 1040, 84, '#7a5a3a', '#8a6a4a');
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.font = '44px serif';
@@ -965,7 +972,7 @@ export function drawTitle(ctx, world, best = 0) {
 }
 
 export function drawOver(ctx, world, best = 0) {
-  ctx.fillStyle = 'rgba(0,0,0,0.40)';
+  ctx.fillStyle = 'rgba(0,0,0,0.30)';
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
   const panelX = 340;
@@ -973,7 +980,7 @@ export function drawOver(ctx, world, best = 0) {
   const panelW = 600;
   const panelH = 470;
 
-  drawBox(ctx, panelX, panelY, panelW, panelH, '#2c2318', '#c97b3f');
+  drawBox(ctx, panelX, panelY, panelW, panelH, '#6b4a2f', '#c97b3f');
 
   ctx.save();
   ctx.strokeStyle = '#ffd166';
@@ -1020,7 +1027,7 @@ export function drawOver(ctx, world, best = 0) {
     'cheese-melt': '🧀',
     'garden-salad': '🥗',
     'sunny-omelette': '🍳',
-    'double-stacker': '🍔',
+    'double-stacker': '🥪',
   };
   for (let i = 0; i < 3; i++) {
     const recipe = RECIPES[i];
@@ -1045,8 +1052,9 @@ export function drawOver(ctx, world, best = 0) {
   ];
   for (let i = 0; i < statRows.length; i++) {
     const y = 410 + i * 30;
+    drawBox(ctx, 430, y - 13, 420, 26, '#4a3524', '#6b4a33');
     drawText(ctx, statRows[i][0], 500, y, 17, '#ffffff', 'right');
-    drawText(ctx, String(statRows[i][1]), 520, y, 17, '#ffffff', 'left');
+    drawText(ctx, String(statRows[i][1]), 520, y, 17, '#ffd166', 'left');
   }
 
   const bx = 540;
@@ -1072,7 +1080,6 @@ export function drawOver(ctx, world, best = 0) {
   ctx.stroke();
 
   drawText(ctx, 'Main lagi', CANVAS_W / 2, 548, 18, '#2c2318', 'center');
-  drawText(ctx, 'Tekan Enter atau klik untuk main lagi', CANVAS_W / 2, 578, 13, '#ffd166', 'center');
 }
 
 function fitTitleText(text, base, maxWidth) {
