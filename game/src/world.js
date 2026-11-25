@@ -302,5 +302,3 @@ export function createWorld(random) {
   state.reset();
   return state;
 }
-
-// PART 2 FOLLOWS.
