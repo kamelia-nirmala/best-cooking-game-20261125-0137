@@ -5,6 +5,11 @@ import { createInput, updateInput } from './input.js';
 import { createAudio } from './audio.js';
 import { setupShot, SHOT_NAMES } from './shots.js';
 import { createRandom } from './random.js';
+import { createKitchen } from './scene3d.js';
+import { buildStations } from './stations3d.js';
+import { buildChef } from './chef3d.js';
+import { buildIngredients } from './ingredients3d.js';
+import { buildEffects } from './effects.js';
 
 const BEST_KEY = 'dapur-sizzle-best';
 const MAX_DT = 0.05;
@@ -15,6 +20,35 @@ canvas.width = CANVAS_W;
 canvas.height = CANVAS_H;
 
 const ctx = canvas.getContext('2d');
+
+// --- 3D scene (three.js) on the #gl canvas behind the 2D HUD canvas ---
+let glRenderer = null;
+let kitchen = null;
+let stations = null;
+let chef = null;
+let ingredients = null;
+let effects = null;
+const glCanvas = document.getElementById('gl');
+if (glCanvas && typeof THREE !== 'undefined') {
+  glRenderer = new THREE.WebGLRenderer({ canvas: glCanvas, antialias: true, preserveDrawingBuffer: true });
+  glRenderer.setSize(CANVAS_W, CANVAS_H);
+  glRenderer.setPixelRatio(1);
+  kitchen = createKitchen();
+  stations = kitchen ? buildStations(kitchen.scene) : null;
+  chef = kitchen ? buildChef(kitchen.scene) : null;
+  ingredients = kitchen ? buildIngredients(kitchen.scene) : null;
+  effects = kitchen ? buildEffects(kitchen.scene) : null;
+}
+
+function render3D() {
+  if (stations) stations.update(world, world.frame || 0);
+  if (chef) chef.update(world, world.frame || 0);
+  if (ingredients) ingredients.update(world, world.frame || 0);
+  if (effects) effects.update(world, world.frame || 0);
+  if (glRenderer && kitchen) {
+    glRenderer.render(kitchen.scene, kitchen.camera);
+  }
+}
 
 function loadBest() {
   try {
@@ -100,6 +134,7 @@ function frame(now) {
   }
 
   stepGame(dt);
+  render3D();
   draw(ctx, world, screen, best);
 
   requestAnimationFrame(frame);
@@ -124,6 +159,7 @@ if (shot && shotNames.includes(shot)) {
     screen = SCREEN_PLAY;
   }
 
+  render3D();
   draw(ctx, world, screen, best);
 } else {
   lastTime = performance.now();
