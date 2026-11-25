@@ -45,21 +45,21 @@ export function createKitchen() {
   const ctx = tileCanvas.getContext('2d');
 
   // Base cream.
-  ctx.fillStyle = '#e8dcc0';
+  ctx.fillStyle = '#c98a5e';
   ctx.fillRect(0, 0, 256, 256);
 
   // Alternate tiles, slightly deeper cream.
   for (let row = 0; row < 2; row++) {
     for (let col = 0; col < 2; col++) {
       if ((row + col) % 2 === 1) {
-        ctx.fillStyle = '#dfd2b0';
+        ctx.fillStyle = '#bd7a4e';
         ctx.fillRect(col * 128, row * 128, 128, 128);
       }
     }
   }
 
   // Thin grout lines.
-  ctx.strokeStyle = '#b8a888';
+  ctx.strokeStyle = '#8a5a3a';
   ctx.lineWidth = 2;
   for (let row = 0; row < 2; row++) {
     for (let col = 0; col < 2; col++) {
@@ -113,7 +113,7 @@ export function createKitchen() {
   // ------------------------------------------------------ Back wall + wainscot
   const wall = new THREE.Mesh(
     new THREE.BoxGeometry(22, 5, 0.4),
-    new THREE.MeshStandardMaterial({ color: 0xf0e6d0, roughness: 0.95 })
+    new THREE.MeshStandardMaterial({ color: 0xa8b89a, roughness: 0.95 })
   );
   wall.position.set(0, 2.5, -7.2);
   wall.receiveShadow = true;
@@ -121,7 +121,7 @@ export function createKitchen() {
 
   const wainscot = new THREE.Mesh(
     new THREE.BoxGeometry(22, 1.2, 0.45),
-    new THREE.MeshStandardMaterial({ color: 0xdcc9a8, roughness: 0.95 })
+    new THREE.MeshStandardMaterial({ color: 0x8a9a7a, roughness: 0.95 })
   );
   wainscot.position.set(0, 0.6, -7.18);
   wainscot.receiveShadow = true;
@@ -148,7 +148,7 @@ export function createKitchen() {
   addBox(3.4, 0.12, 0.1, 6.5, 2.6, -6.93, darkFrameMaterial);
 
   // ---------------------------------------------------------------- Spice rack
-  addBox(4.5, 0.18, 0.6, -6, 2.2, -6.9, woodMaterial);
+  addBox(4.5, 0.18, 0.6, -6, 2.0, -6.9, woodMaterial);
 
   const jarColors = [0xc0392b, 0x27ae60, 0xd4a017];
   const jarXs = [-7.4, -6, -4.6];
@@ -157,7 +157,7 @@ export function createKitchen() {
       new THREE.CylinderGeometry(0.32, 0.32, 0.7, 12),
       new THREE.MeshStandardMaterial({ color: jarColors[i], roughness: 0.5 })
     );
-    jar.position.set(jarXs[i], 2.65, -6.9);
+    jar.position.set(jarXs[i], 2.45, -6.9);
     jar.castShadow = true;
     jar.receiveShadow = true;
     scene.add(jar);
@@ -226,7 +226,7 @@ export function createKitchen() {
       new THREE.CylinderGeometry(0.45, 0.38, 0.5, 14),
       potMaterial
     );
-    pot.position.set(x, 2.35, -6.9);
+    pot.position.set(x, 2.15, -6.9);
     pot.castShadow = true;
     pot.receiveShadow = true;
     scene.add(pot);
@@ -235,12 +235,12 @@ export function createKitchen() {
       new THREE.CylinderGeometry(0.03, 0.03, 0.5, 6),
       hookMaterial
     );
-    hook.position.set(x, 2.85, -6.9);
+    hook.position.set(x, 2.65, -6.9);
     hook.castShadow = true;
     scene.add(hook);
   }
 
-  addBox(0.9, 0.08, 0.12, 0.7, 2.35, -6.9, potMaterial);
+  addBox(0.9, 0.08, 0.12, 0.7, 2.15, -6.9, potMaterial);
 
   // --------------------------------------------------------------- Potted plants
   const plantPotMaterial = new THREE.MeshStandardMaterial({ color: 0xc97b3f, roughness: 0.8 });
@@ -280,7 +280,7 @@ export function createKitchen() {
     new THREE.MeshStandardMaterial({ color: 0xa83a4a, roughness: 0.95 })
   );
   rug.rotation.x = -Math.PI / 2;
-  rug.position.set(0, 0.02, 3.8);
+  rug.position.set(0, 0.02, 5.0);
   rug.receiveShadow = true;
   scene.add(rug);
 
@@ -289,7 +289,7 @@ export function createKitchen() {
     goldMaterial
   );
   rugRing.rotation.x = -Math.PI / 2;
-  rugRing.position.set(0, 0.03, 3.8);
+  rugRing.position.set(0, 0.03, 5.0);
   scene.add(rugRing);
 
   for (const x of [-1.6, -0.8, 0, 0.8, 1.6]) {
@@ -298,7 +298,7 @@ export function createKitchen() {
       goldMaterial
     );
     diamond.rotation.y = Math.PI / 4;
-    diamond.position.set(x, 0.04, 3.8);
+    diamond.position.set(x, 0.04, 5.0);
     scene.add(diamond);
   }
 
@@ -307,7 +307,7 @@ export function createKitchen() {
     new THREE.CylinderGeometry(0.55, 0.42, 0.7, 12),
     new THREE.MeshStandardMaterial({ color: 0xb08a4f, roughness: 0.9 })
   );
-  basket.position.set(-7.5, 0.35, 4.2);
+  basket.position.set(7.5, 0.35, 4.2);
   basket.castShadow = true;
   basket.receiveShadow = true;
   scene.add(basket);
@@ -317,13 +317,13 @@ export function createKitchen() {
     new THREE.MeshStandardMaterial({ color: 0xb08a4f, roughness: 0.9 })
   );
   basketRim.rotation.x = -Math.PI / 2;
-  basketRim.position.set(-7.5, 0.72, 4.2);
+  basketRim.position.set(7.5, 0.72, 4.2);
   basketRim.castShadow = true;
   basketRim.receiveShadow = true;
   scene.add(basketRim);
 
   const breadMaterial = new THREE.MeshStandardMaterial({ color: 0xe8b45a, roughness: 0.8 });
-  for (const [bx, bz] of [[-7.75, 4.05], [-7.25, 4.05], [-7.5, 4.4]]) {
+  for (const [bx, bz] of [[7.25, 4.05], [7.75, 4.05], [7.5, 4.4]]) {
     const loaf = new THREE.Mesh(
       new THREE.SphereGeometry(0.22, 12, 10),
       breadMaterial
