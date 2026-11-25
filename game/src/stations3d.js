@@ -10,7 +10,7 @@ const cabinetGreen = new THREE.MeshStandardMaterial({ color: 0x2e5d43, roughness
 const cabinetGreenDark = new THREE.MeshStandardMaterial({ color: 0x244a36, roughness: 0.75 });
 const cabinetWood = new THREE.MeshStandardMaterial({ color: 0x6b4a2f, roughness: 0.75 });
 const cabinetWoodDark = new THREE.MeshStandardMaterial({ color: 0x543a25, roughness: 0.8 });
-const counterMat = new THREE.MeshStandardMaterial({ color: 0xf0e6d0, roughness: 0.6 });
+const counterMat = new THREE.MeshStandardMaterial({ color: 0x5a3d24, roughness: 0.6 });
 const backsplashMat = new THREE.MeshStandardMaterial({ color: 0xe8dcc0, roughness: 0.65 });
 const darkMetal = new THREE.MeshStandardMaterial({ color: 0x2f2c2a, roughness: 0.55, metalness: 0.4 });
 const steel = new THREE.MeshStandardMaterial({ color: 0xb8bcc2, roughness: 0.35, metalness: 0.6 });
@@ -88,11 +88,11 @@ function badge(parent, x, y, z, label) {
     map: texture,
     transparent: true,
     opacity: 0.85,
-    depthTest: false
+    depthTest: true
   }));
   sprite.scale.set(1.3, 0.32, 1);
   sprite.position.set(x, y, z);
-  sprite.renderOrder = 999;
+  sprite.renderOrder = -1;
   parent.add(sprite);
   const b = { sprite, canvas, ctx, texture, label, lastText: null };
   setBadge(b, label);
@@ -175,7 +175,7 @@ export function buildStations(scene) {
   const glowMatR = new THREE.MeshStandardMaterial({ color: 0xff6a00, emissive: 0xff5a00, emissiveIntensity: 0 });
   const glowL = cyl(0.5, 0.5, 0.05, -0.9, 1.18, 0, glowMatL, grill.group);
   const glowR = cyl(0.5, 0.5, 0.05, 0.9, 1.18, 0, glowMatR, grill.group);
-  const pattyMat = new THREE.MeshStandardMaterial({ color: 0x8a4a2a, roughness: 0.75 });
+  const pattyMat = new THREE.MeshStandardMaterial({ color: 0xe07878, roughness: 0.75 });
   const pattyMatCooked = new THREE.MeshStandardMaterial({ color: 0x5a2e18, roughness: 0.7 });
   const pattyL = mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.14, 14), pattyMat, -0.9, 1.28, 0, grill.group);
   pattyL.visible = false;
@@ -185,12 +185,18 @@ export function buildStations(scene) {
   cyl(0.12, 0.12, 0.1, 0.6, 1.1, grill.depth3d / 2 + 0.05, steel, grill.group);
   const grillBadge = badge(grill.group, 0, 2.6, 0, 'PANGGANG');
 
+  const PLATE_COLORS = { bun: 0xe8b45a, patty: 0x8a4a2a, lettuce: 0x7bc47f, tomato: 0xe2543e, cheese: 0xffd166, egg: 0xf2c94c };
   // ---- PLATE ----
   const plate = stationGroup(scene, RECTS.plate);
   buildCabinet(plate, cabinetGreen, cabinetGreenDark);
-  cyl(0.7, 0.7, 0.08, 0, 1.15, 0, white, plate.group, 24);
+  cyl(0.9, 0.9, 0.08, 0, 1.15, 0, white, plate.group, 24);
+  const plateRim = new THREE.Mesh(new THREE.TorusGeometry(0.9, 0.04, 8, 24), new THREE.MeshStandardMaterial({ color: 0x3a2a1a, roughness: 0.6 })); plateRim.rotation.x = -Math.PI / 2; plateRim.position.set(0, 1.19, 0); plateRim.castShadow = true; plate.group.add(plateRim);
   const garnishMat = new THREE.MeshStandardMaterial({ color: 0x4a7d3a, roughness: 0.8 });
   mesh(new THREE.SphereGeometry(0.12, 16, 12), garnishMat, 0.3, 1.22, 0.2, plate.group);
+  const plateLayer0 = mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.12, 20), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.7 }), 0, 1.22, 0, plate.group); plateLayer0.visible = false;
+  const plateLayer1 = mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.12, 20), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.7 }), 0, 1.34, 0, plate.group); plateLayer1.visible = false;
+  const plateLayer2 = mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.12, 20), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.7 }), 0, 1.46, 0, plate.group); plateLayer2.visible = false;
+  const plateLayer3 = mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.12, 20), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.7 }), 0, 1.58, 0, plate.group); plateLayer3.visible = false;
   badge(plate.group, 0, 2.6, 0, 'PIRING');
 
   // ---- SERVE ----
@@ -253,6 +259,16 @@ export function buildStations(scene) {
       chopVeg.visible = true;
       chopVeg.material.color.setHex(world.chopSlot.item.id === 'tomato' ? 0xe2543e : 0x7bc47f);
     } else { chopVeg.visible = false; }
+    const plateItems = world && world.plate ? world.plate : [];
+    const plateLayers = [plateLayer0, plateLayer1, plateLayer2, plateLayer3];
+    for (let i = 0; i < 4; i++) {
+      const it = plateItems[i];
+      if (it) {
+        plateLayers[i].visible = true;
+        plateLayers[i].material.color.setHex(PLATE_COLORS[it.id] === undefined ? 0xcccccc : PLATE_COLORS[it.id]);
+        plateLayers[i].scale.set(it.id === 'bun' ? 1.15 : 1, 1, it.id === 'bun' ? 1.15 : 1);
+      } else { plateLayers[i].visible = false; }
+    }
   }
 
   return { update };
