@@ -67,9 +67,13 @@ export function buildChef(scene) {
   const legR = makeLeg(0.16);
 
   // ---- Body (white jacket): upright capsule + rounded belly ----
+  const outlineMat = new THREE.MeshBasicMaterial({ color: 0x2a2018, side: THREE.BackSide });
   const body = makeMesh(new THREE.CapsuleGeometry(0.42, 0.35, 8, 16), white);
   body.position.set(0, 0.85, 0);
   chef.add(body);
+  const bodyOutline = new THREE.Mesh(new THREE.CapsuleGeometry(0.46, 0.38, 8, 16), outlineMat);
+  bodyOutline.position.set(0, 0.85, 0);
+  chef.add(bodyOutline);
 
   const belly = makeMesh(new THREE.SphereGeometry(0.44, 18, 14), white);
   belly.scale.set(1, 0.9, 0.8);
@@ -114,6 +118,9 @@ export function buildChef(scene) {
   const head = makeMesh(new THREE.SphereGeometry(0.38, 24, 18), skin);
   head.position.set(0, 1.5, 0);
   chef.add(head);
+  const headOutline = new THREE.Mesh(new THREE.SphereGeometry(0.42, 24, 18), outlineMat);
+  headOutline.position.set(0, 1.5, 0);
+  chef.add(headOutline);
 
   // ---- Eyes ----
   const eyeGeo = new THREE.SphereGeometry(0.05, 10, 8);
@@ -167,8 +174,8 @@ export function buildChef(scene) {
   const trayItems = [];
   for (let i = 0; i < 3; i++) {
     const itemMat = new THREE.MeshStandardMaterial({ color: 0xe8b45a, roughness: 0.6 });
-    const item = makeMesh(new THREE.BoxGeometry(0.22, 0.16, 0.22), itemMat);
-    item.position.set(-0.2 + i * 0.2, 0.12, 0);
+    const item = makeMesh(new THREE.BoxGeometry(0.32, 0.24, 0.32), itemMat);
+    item.position.set(-0.28 + i * 0.28, 0.16, 0);
     item.visible = false;
     tray.add(item);
     trayItems.push(item);
@@ -183,7 +190,7 @@ export function buildChef(scene) {
       return;
     }
     chef.visible = true;
-    chef.position.set((world.chef.x - 640) / 64, 0, (world.chef.y - 400) / 45);
+    chef.position.set((world.chef.x - 640) / 64, 0, (world.chef.y - 400) / 45 + 1.2);
 
     if (world.chef.moving) {
       // Face the direction of travel.
