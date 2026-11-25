@@ -18,63 +18,22 @@ function recipeItems(recipe) {
 
 export function setupShot(world, name) {
   switch (name) {
-    case 'assembly': {
+    case 'recipes': {
       world.reset();
       world.spawnOrder();
       world.spawnOrder();
-      world.elapsed = 95;
-      world.timeLeft = 55;
-      world.level = 4;
-      world.score = 380;
-      world.coins = 380;
-      world.combo = 3;
-      world.bestCombo = 5;
-      world.served = 4;
-
-      world.chopSlot = {
-        item: makeItem('tomato'),
-        t: 2.0,
-        done: false,
-      };
-
-      if (!world.grillSlots[0]) {
-        world.grillSlots[0] = { item: null, t: 0, burnt: false };
-      }
-      world.grillSlots[0].item = makeItem('patty');
-      world.grillSlots[0].t = 4;
-      world.grillSlots[0].burnt = false;
-
-      if (!world.grillSlots[1]) {
-        world.grillSlots[1] = { item: null, t: 0, burnt: false };
-      }
-      world.grillSlots[1].item = makeItem('patty');
-      world.grillSlots[1].t = 2;
-      world.grillSlots[1].burnt = false;
-
+      world.elapsed = 30;
+      world.timeLeft = 120;
+      world.level = 2;
+      world.score = 240;
+      world.coins = 240;
+      world.combo = 2;
+      world.bestCombo = 3;
+      world.served = 2;
+      world.failed = 0;
       world.plate = [makeItem('bun')];
-
-      world.tray = [makeItem('lettuce', false, true)];
-
-      world.chef.x = 450;
-      world.chef.y = 595;
-
-      if (world.orders[0]) {
-        world.orders[0].patience = 35;
-        world.orders[0].maxPatience = 50;
-      }
-      if (world.orders[1]) {
-        world.orders[1].patience = 18;
-        world.orders[1].maxPatience = 50;
-      }
-      if (world.orders[2]) {
-        world.orders[2].patience = 8;
-        world.orders[2].maxPatience = 50;
-      }
-      if (world.orders[3]) {
-        world.orders[3].patience = 3;
-        world.orders[3].maxPatience = 50;
-      }
-
+      world.tray = [];
+      world.chef = { x: 640, y: 595 };
       world.message = '';
       world.messageT = 0;
       break;
@@ -175,73 +134,34 @@ export function setupShot(world, name) {
 
       world.plate = [makeItem('bun'), makeItem('patty', true), makeItem('patty', true), makeItem('lettuce', false, true)];
 
-      world.chef.x = 860;
-      world.chef.y = 595;
+      world.chef = { x: 860, y: 640 };
 
       world.message = 'Served! +180';
       world.messageT = 1.5;
       break;
     }
 
-    case 'rush':
+    case 'results': {
       world.reset();
       world.spawnOrder();
       world.spawnOrder();
-
-      world.elapsed = 140;
-      world.timeLeft = 10;
+      world.elapsed = 150;
+      world.timeLeft = 0;
       world.level = 5;
       world.score = 650;
       world.coins = 650;
-      world.combo = 5;
-      world.bestCombo = 5;
+      world.combo = 0;
+      world.bestCombo = 6;
       world.served = 6;
-      world.failed = 0;
-
-      world.chopSlot = {
-        item: makeItem('lettuce'),
-        t: 2.0,
-        done: false,
-      };
-
-      if (!world.grillSlots[0]) {
-        world.grillSlots[0] = { item: null, t: 0, burnt: false };
-      }
-      world.grillSlots[0].item = makeItem('patty');
-      world.grillSlots[0].t = 7;
-      world.grillSlots[0].burnt = false;
-
-      if (!world.grillSlots[1]) {
-        world.grillSlots[1] = { item: null, t: 0, burnt: false };
-      }
-      world.grillSlots[1].item = makeItem('patty');
-      world.grillSlots[1].t = 3;
-      world.grillSlots[1].burnt = false;
-
-      world.plate = [makeItem('bun'), makeItem('patty', true)];
-      world.tray = [makeItem('lettuce', false, true)];
-      world.chef = { x: 485, y: 448 };
-
-      if (world.orders[0]) {
-        world.orders[0].patience = 8;
-        world.orders[0].maxPatience = 50;
-      }
-      if (world.orders[1]) {
-        world.orders[1].patience = 6;
-        world.orders[1].maxPatience = 50;
-      }
-      if (world.orders[2]) {
-        world.orders[2].patience = 4;
-        world.orders[2].maxPatience = 50;
-      }
-      if (world.orders[3]) {
-        world.orders[3].patience = 2;
-        world.orders[3].maxPatience = 50;
-      }
-
+      world.failed = 1;
+      world.plate = [];
+      world.tray = [];
+      world.chef = { x: 640, y: 595 };
+      world.over = true;
       world.message = '';
       world.messageT = 0;
       break;
+    }
 
     default: {
       world.reset();
@@ -252,4 +172,4 @@ export function setupShot(world, name) {
   return world;
 }
 
-export const SHOT_NAMES = ['play', 'assembly', 'serve', 'rush'];
+export const SHOT_NAMES = ['play', 'recipes', 'serve', 'results'];
