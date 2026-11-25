@@ -3,12 +3,12 @@ export const SHIFT_SECONDS = 150;
 export const LEVEL = { seconds: 30, max: 5 };
 
 export const INGREDIENTS = [
-  { id: "bun", label: "Bun" },
-  { id: "patty", label: "Patty" },
-  { id: "lettuce", label: "Lettuce" },
-  { id: "tomato", label: "Tomato" },
-  { id: "cheese", label: "Cheese" },
-  { id: "egg", label: "Egg" }
+  { id: "bun", label: "Roti" },
+  { id: "patty", label: "Daging" },
+  { id: "lettuce", label: "Selada" },
+  { id: "tomato", label: "Tomat" },
+  { id: "cheese", label: "Keju" },
+  { id: "egg", label: "Telur" }
 ];
 
 export const RECIPES = [
