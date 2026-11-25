@@ -87,12 +87,12 @@ export const CANVAS_W = 1280;
 export const CANVAS_H = 720;
 
 export const STATIONS = {
-  bins: { x: 40, y: 192, w: 800, h: 72 },
-  chop: { x: 60, y: 300, w: 200, h: 110 },
-  grill: { x: 290, y: 300, w: 200, h: 110 },
-  plate: { x: 520, y: 300, w: 200, h: 110 },
-  serve: { x: 900, y: 280, w: 320, h: 180 },
-  trash: { x: 1100, y: 560, w: 120, h: 90 }
+  bins: { x: 40, y: 180, w: 840, h: 90 },
+  chop: { x: 60, y: 300, w: 250, h: 150 },
+  grill: { x: 360, y: 300, w: 250, h: 150 },
+  plate: { x: 420, y: 520, w: 250, h: 150 },
+  serve: { x: 720, y: 520, w: 280, h: 150 },
+  trash: { x: 60, y: 520, w: 150, h: 110 }
 };
 
 export const CHEF_START = { x: 640, y: 520 };
