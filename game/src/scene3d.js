@@ -280,7 +280,7 @@ export function createKitchen() {
     new THREE.MeshStandardMaterial({ color: 0xa83a4a, roughness: 0.95 })
   );
   rug.rotation.x = -Math.PI / 2;
-  rug.position.set(0, 0.02, 5.0);
+  rug.position.set(0, 0.02, 4.0);
   rug.receiveShadow = true;
   scene.add(rug);
 
@@ -289,7 +289,7 @@ export function createKitchen() {
     goldMaterial
   );
   rugRing.rotation.x = -Math.PI / 2;
-  rugRing.position.set(0, 0.03, 5.0);
+  rugRing.position.set(0, 0.03, 4.0);
   scene.add(rugRing);
 
   for (const x of [-1.6, -0.8, 0, 0.8, 1.6]) {
@@ -298,7 +298,7 @@ export function createKitchen() {
       goldMaterial
     );
     diamond.rotation.y = Math.PI / 4;
-    diamond.position.set(x, 0.04, 5.0);
+    diamond.position.set(x, 0.04, 4.0);
     scene.add(diamond);
   }
 
