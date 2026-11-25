@@ -68,27 +68,10 @@
       0 0 70px rgba(255, 120, 50, 0.12);
   }
 
-  .controls {
-    margin: 0;
-    padding: 0 8px;
-    max-width: 1280px;
-    text-align: center;
-    font-size: 14px;
-    line-height: 1.5;
-    letter-spacing: 0.3px;
-    color: #b9a494;
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
-    user-select: none;
-  }
-
   @media (max-width: 640px) {
     body {
       padding: 10px;
       gap: 10px;
-    }
-
-    .controls {
-      font-size: 12px;
     }
   }
 </style>
@@ -97,7 +80,6 @@
   <canvas id="game" width="1280" height="720" tabindex="0">
     Your browser does not support the HTML5 canvas element required for Dapur Sizzle.
   </canvas>
-  <p class="controls">WASD / arrows move, E use, P pause, M mute, Enter start</p>
   <script type="module" src="./src/main.js"></script>
 </body>
 </html>
