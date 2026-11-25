@@ -33,6 +33,10 @@ if (glCanvas && typeof THREE !== 'undefined') {
   glRenderer = new THREE.WebGLRenderer({ canvas: glCanvas, antialias: true, preserveDrawingBuffer: true });
   glRenderer.setSize(CANVAS_W, CANVAS_H);
   glRenderer.setPixelRatio(1);
+  glRenderer.shadowMap.enabled = true;
+  glRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  glRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+  glRenderer.toneMappingExposure = 1.15;
   kitchen = createKitchen();
   stations = kitchen ? buildStations(kitchen.scene) : null;
   chef = kitchen ? buildChef(kitchen.scene) : null;
