@@ -152,7 +152,7 @@ export function buildStations(scene) {
   const chopVeg = mesh(new THREE.SphereGeometry(0.32, 12, 10), new THREE.MeshStandardMaterial({ color: 0x7bc47f, roughness: 0.8 }), -0.4, 1.28, 0, chop.group);
   chopVeg.scale.set(1, 0.55, 1);
   chopVeg.visible = false;
-  const chopBadge = badge(chop.group, 0, 1.35, 1.7, 'POTONG');
+  const chopBadge = badge(chop.group, 1.2, 1.35, 1.7, 'POTONG');
 
   // ---- GRILL ----
   const grill = stationGroup(scene, RECTS.grill);
@@ -183,7 +183,7 @@ export function buildStations(scene) {
   pattyR.visible = false;
   cyl(0.12, 0.12, 0.1, -0.6, 1.1, grill.depth3d / 2 + 0.05, steel, grill.group);
   cyl(0.12, 0.12, 0.1, 0.6, 1.1, grill.depth3d / 2 + 0.05, steel, grill.group);
-  const grillBadge = badge(grill.group, 0, 1.35, 1.7, 'PANGGANG');
+  const grillBadge = badge(grill.group, -0.6, 1.35, 1.7, 'PANGGANG');
 
   const PLATE_COLORS = { bun: 0xe8b45a, patty: 0x8a4a2a, lettuce: 0x7bc47f, tomato: 0xe2543e, cheese: 0xffd166, egg: 0xf2c94c };
   // ---- PLATE ----
@@ -197,7 +197,7 @@ export function buildStations(scene) {
   const plateLayer1 = mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.12, 20), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.7 }), 0, 1.34, 0, plate.group); plateLayer1.visible = false;
   const plateLayer2 = mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.12, 20), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.7 }), 0, 1.46, 0, plate.group); plateLayer2.visible = false;
   const plateLayer3 = mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.12, 20), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.7 }), 0, 1.58, 0, plate.group); plateLayer3.visible = false;
-  const plateBadge = badge(plate.group, 0, 2.6, 0, 'PIRING');
+  const plateBadge = badge(plate.group, 0, 1.35, 1.7, 'PIRING');
 
   // ---- SERVE ----
   const serve = stationGroup(scene, RECTS.serve);
@@ -214,7 +214,7 @@ export function buildStations(scene) {
   box(0.12, 1.6, 0.12, -serve.width3d / 2 + 0.2, 1.9, -serve.depth3d / 2 + 0.1, darkMetal, serve.group);
   box(0.12, 1.6, 0.12, serve.width3d / 2 - 0.2, 1.9, -serve.depth3d / 2 + 0.1, darkMetal, serve.group);
   box(serve.width3d, 0.12, 0.12, 0, 2.7, -serve.depth3d / 2 + 0.1, darkMetal, serve.group);
-  const serveBadge = badge(serve.group, 0, 3.2, 0, 'SAJI');
+  const serveBadge = badge(serve.group, 0, 1.35, 1.7, 'SAJI');
 
   // ---- TRASH ----
   const trash = stationGroup(scene, RECTS.trash);
