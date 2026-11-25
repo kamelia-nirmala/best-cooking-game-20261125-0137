@@ -48,8 +48,8 @@ case 'assembly': {
 
       world.tray = [makeItem('lettuce', false, true)];
 
-      world.chef.x = 620;
-      world.chef.y = 355;
+      world.chef.x = 450;
+      world.chef.y = 595;
 
       if (world.orders[0]) {
         world.orders[0].patience = 40;
@@ -103,8 +103,8 @@ case 'assembly': {
 
       world.tray = [makeItem('bun')];
 
-      world.chef.x = 390;
-      world.chef.y = 355;
+      world.chef.x = 485;
+      world.chef.y = 375;
 
       if (world.orders[0]) {
         world.orders[0].patience = 45;
@@ -166,8 +166,8 @@ case 'assembly': {
       const recipe = (world.orders[0] && world.orders[0].recipe) || RECIPES[0];
       world.plate = recipeItems(recipe).map(itemFromSpec);
 
-      world.chef.x = 1060;
-      world.chef.y = 370;
+      world.chef.x = 860;
+      world.chef.y = 595;
 
       world.message = 'Served! +120';
       world.messageT = 1.5;
@@ -204,7 +204,7 @@ case 'assembly': {
 
       world.plate = [makeItem('bun'), makeItem('patty', true)];
       world.tray = [makeItem('lettuce', false, true)];
-      world.chef = { x: 390, y: 355 };
+      world.chef = { x: 485, y: 375 };
 
       if (world.orders[0]) {
         world.orders[0].patience = 8;
