@@ -891,42 +891,42 @@ export function drawRecipeBook(ctx, world) {
   };
   ctx.fillStyle = 'rgba(0,0,0,0.30)';
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-  drawBox(ctx, 90, 70, 1100, 580, '#6b4a2f', '#c97b3f');
+  drawBox(ctx, 256, 70, 768, 590, '#f5eeda', '#c97b3f');
 
   ctx.save();
-  ctx.strokeStyle = '#ffd166';
+  ctx.strokeStyle = '#c97b3f';
   ctx.lineWidth = 2;
-  ctx.strokeRect(100, 80, 1080, 560);
+  ctx.strokeRect(266, 80, 748, 570);
   ctx.restore();
 
-  const corners = [[90, 70], [1190, 70], [90, 650], [1190, 650]];
+  const corners = [[256, 70], [1024, 70], [256, 660], [1024, 660]];
   for (let c = 0; c < corners.length; c++) {
     ctx.save();
     ctx.translate(corners[c][0], corners[c][1]);
     ctx.rotate(Math.PI / 4);
-    ctx.fillStyle = '#ffd166';
+    ctx.fillStyle = '#c97b3f';
     ctx.fillRect(-4, -4, 8, 8);
     ctx.restore();
   }
 
-  drawText(ctx, 'BUKU RESEP', 640, 115, 34, '#ffd166', 'center');
-  drawText(ctx, 'Dapur Sizzle — 5 resep, sajikan sebelum waktu habis', 640, 148, 16, '#e8dcc8', 'center');
+  drawText(ctx, 'BUKU RESEP', 640, 115, 34, '#4a3524', 'center');
+  drawText(ctx, 'Dapur Sizzle — 5 resep, sajikan sebelum waktu habis', 640, 148, 16, '#6b4a2f', 'center');
   for (let i = 0; i < RECIPES.length; i++) {
     const recipe = RECIPES[i];
     const rowY = 185 + i * 90;
-    drawBox(ctx, 120, rowY, 1040, 84, '#7a5a3a', '#8a6a4a');
+    drawBox(ctx, 276, rowY, 728, 84, '#efe3c8', '#c9a86a');
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.font = '44px serif';
-    ctx.fillStyle = '#ffffff';
-    ctx.fillText(DISH_EMOJI[recipe.id] || '🍽️', 170, rowY + 42);
-    drawText(ctx, recipe.name, 210, rowY + 30, 24, '#f2f5ff', 'left');
-    drawText(ctx, recipe.points + ' poin', 210, rowY + 60, 16, '#ffd166', 'left');
+    ctx.fillStyle = '#4a3524';
+    ctx.fillText(DISH_EMOJI[recipe.id] || '🍽️', 316, rowY + 42);
+    drawText(ctx, recipe.name, 356, rowY + 30, 24, '#4a3524', 'left');
+    drawText(ctx, recipe.points + ' poin', 356, rowY + 60, 16, '#8a5a2a', 'left');
     for (let j = 0; j < recipe.items.length; j++) {
       const item = recipe.items[j];
-      const x = 560 + j * 56;
-      drawText(ctx, EMOJI[item.id] || '•', x, rowY + 42, 28, '#ffffff', 'center');
-      drawText(ctx, ITEM_LABEL[item.id] || item.id, x, rowY + 68, 11, '#c8a98b', 'center');
+      const x = 580 + j * 50;
+      drawText(ctx, EMOJI[item.id] || '•', x, rowY + 42, 28, '#4a3524', 'center');
+      drawText(ctx, ITEM_LABEL[item.id] || item.id, x, rowY + 68, 11, '#6b4a2f', 'center');
       if (item.cooked) {
         drawText(ctx, '🔥', x + 18, rowY + 22, 10, '#ffb347', 'center');
       }
@@ -934,9 +934,9 @@ export function drawRecipeBook(ctx, world) {
         drawText(ctx, 'C', x - 18, rowY + 22, 10, '#7fd3ff', 'center');
       }
     }
-    drawText(ctx, DISH_DESC[recipe.id] || 'Hidangan khas Dapur Sizzle.', 1140, rowY + 42, 14, '#e8dcc8', 'right');
+    drawText(ctx, DISH_DESC[recipe.id] || 'Hidangan khas Dapur Sizzle.', 984, rowY + 42, 14, '#6b4a2f', 'right');
   }
-  drawText(ctx, 'Tekan R untuk kembali ke dapur', 640, 668, 16, '#8ef58e', 'center');
+  drawText(ctx, 'Tekan R untuk kembali ke dapur', 640, 640, 16, '#4a3524', 'center');
 }
 
 function drawPlay(ctx, world) {
@@ -980,10 +980,10 @@ export function drawOver(ctx, world, best = 0) {
   const panelW = 600;
   const panelH = 470;
 
-  drawBox(ctx, panelX, panelY, panelW, panelH, '#6b4a2f', '#c97b3f');
+  drawBox(ctx, panelX, panelY, panelW, panelH, '#f5eeda', '#c97b3f');
 
   ctx.save();
-  ctx.strokeStyle = '#ffd166';
+  ctx.strokeStyle = '#c97b3f';
   ctx.lineWidth = 2;
   ctx.strokeRect(panelX + 10, panelY + 10, panelW - 20, panelH - 20);
   ctx.restore();
@@ -992,7 +992,7 @@ export function drawOver(ctx, world, best = 0) {
     ctx.save();
     ctx.translate(cx, cy);
     ctx.rotate(Math.PI / 4);
-    ctx.fillStyle = '#ffd166';
+    ctx.fillStyle = '#c97b3f';
     ctx.fillRect(-4, -4, 8, 8);
     ctx.restore();
   };
@@ -1001,7 +1001,7 @@ export function drawOver(ctx, world, best = 0) {
   drawDiamond(panelX, panelY + panelH);
   drawDiamond(panelX + panelW, panelY + panelH);
 
-  drawText(ctx, 'SHIFT SELESAI', CANVAS_W / 2, 178, 42, '#ffd166', 'center');
+  drawText(ctx, 'SHIFT SELESAI', CANVAS_W / 2, 178, 42, '#4a3524', 'center');
 
   const stars = world.score >= 500 ? 3 : world.score >= 300 ? 2 : world.score >= 100 ? 1 : 0;
   const starStr = '★'.repeat(stars) + '☆'.repeat(3 - stars);
@@ -1020,7 +1020,7 @@ export function drawOver(ctx, world, best = 0) {
   }
   ctx.restore();
 
-  drawText(ctx, 'Skor ' + world.score, CANVAS_W / 2, 292, 36, '#ffffff', 'center');
+  drawText(ctx, 'Skor ' + world.score, CANVAS_W / 2, 292, 36, '#4a3524', 'center');
 
   const DISH_EMOJI = {
     'sizzle-burger': '🍔',
@@ -1040,7 +1040,7 @@ export function drawOver(ctx, world, best = 0) {
     ctx.fillStyle = '#ffffff';
     ctx.fillText(icon, x, 340);
     ctx.restore();
-    ctx.fillStyle = '#ffd166';
+    ctx.fillStyle = '#c97b3f';
     ctx.fillRect(x - 20, 364, 40, 2);
   }
 
@@ -1052,9 +1052,9 @@ export function drawOver(ctx, world, best = 0) {
   ];
   for (let i = 0; i < statRows.length; i++) {
     const y = 410 + i * 30;
-    drawBox(ctx, 430, y - 13, 420, 26, '#4a3524', '#6b4a33');
-    drawText(ctx, statRows[i][0], 500, y, 17, '#ffffff', 'right');
-    drawText(ctx, String(statRows[i][1]), 520, y, 17, '#ffd166', 'left');
+    drawBox(ctx, 400, y - 13, 480, 26, '#efe3c8', '#c9a86a');
+    drawText(ctx, statRows[i][0], 540, y, 17, '#4a3524', 'right');
+    drawText(ctx, String(statRows[i][1]), 560, y, 17, '#8a5a2a', 'left');
   }
 
   const bx = 540;
