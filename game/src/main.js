@@ -45,6 +45,7 @@ if (glCanvas && typeof THREE !== 'undefined') {
 }
 
 function render3D() {
+  world.screen = screen;
   if (stations) stations.update(world, world.frame || 0);
   if (chef) chef.update(world, world.frame || 0);
   if (ingredients) ingredients.update(world, world.frame || 0);
