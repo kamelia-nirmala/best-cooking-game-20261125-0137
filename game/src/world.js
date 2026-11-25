@@ -55,6 +55,7 @@ export function createWorld(random) {
 
   const state = {
     elapsed: 0,
+    frame: 0,
     timeLeft: SHIFT_SECONDS,
     score: 0,
     coins: 0,
@@ -65,7 +66,7 @@ export function createWorld(random) {
     level: 1,
     over: false,
     paused: false,
-    chef: { x: CHEF_START.x, y: CHEF_START.y },
+    chef: { x: CHEF_START.x, y: CHEF_START.y, dir: 1, moving: false },
     tray: [],
     plate: [],
     grillSlots: emptyGrillSlots(),
@@ -150,6 +151,7 @@ export function createWorld(random) {
     if (state.paused || state.over) return;
 
     state.elapsed += dt;
+    state.frame += 1;
     state.timeLeft = Math.max(0, SHIFT_SECONDS - state.elapsed);
     state.level = Math.min(LEVEL.max, Math.floor(state.elapsed / LEVEL.seconds) + 1);
 
