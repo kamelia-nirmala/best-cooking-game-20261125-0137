@@ -98,12 +98,35 @@ export function draw(ctx, world, screen, best) {
       const y = row * tileSize;
       const alternate = (row + col) % 2 === 0;
 
-      ctx.fillStyle = alternate ? '#49372e' : '#413027';
+      ctx.fillStyle = alternate ? '#5a3d2b' : '#4e3423';
       ctx.fillRect(x + 1, y + 1, tileSize - 2, tileSize - 2);
 
       ctx.fillStyle = 'rgba(255, 224, 180, 0.035)';
       ctx.fillRect(x + 3, y + 3, tileSize - 6, 2);
+
+      if (alternate) {
+        const diamondSize = tileSize * 0.22;
+        ctx.save();
+        ctx.translate(x + tileSize / 2, y + tileSize / 2);
+        ctx.rotate(Math.PI / 4);
+        ctx.fillStyle = 'rgba(255, 200, 140, 0.10)';
+        ctx.fillRect(-diamondSize / 2, -diamondSize / 2, diamondSize, diamondSize);
+        ctx.restore();
+      }
     }
+  }
+
+  // Patterned border strip along the bottom edge
+  ctx.fillStyle = '#211713';
+  ctx.fillRect(0, h - 10, w, 10);
+
+  for (let bx = 14; bx < w; bx += 28) {
+    ctx.save();
+    ctx.translate(bx, h - 5);
+    ctx.rotate(Math.PI / 4);
+    ctx.fillStyle = '#c97b3f';
+    ctx.fillRect(-2.5, -2.5, 5, 5);
+    ctx.restore();
   }
 
   // Soft ambient shading over the floor
@@ -214,11 +237,11 @@ function drawOrderCard(ctx, order, x, y, w, h) {
   const barColor = p > 0.5 ? '#5ad17a' : p > 0.25 ? '#ffc93c' : '#ff4d4d';
   const textColor = p > 0.5 ? '#9fe0a0' : p > 0.25 ? '#ffd166' : '#ff5f5f';
   drawBox(ctx, x, y, w, h, '#2f3852', '#4a5470');
-  drawText(ctx, order.recipe.name, x + 10, y + 17, 13, '#f2f5ff', 'left');
-  drawText(ctx, formatTime(order.patience), x + w - 10, y + 17, 12, textColor, 'right');
+  drawText(ctx, order.recipe.name, x + 10, y + 17, 15, '#f2f5ff', 'left');
+  drawText(ctx, formatTime(order.patience), x + w - 10, y + 17, 13, textColor, 'right');
   order.recipe.items.forEach((it, i) => {
-    const ix = x + 18 + i * 26;
-    drawText(ctx, EMOJI[it.id], ix, y + 42, 16, '#ffffff', 'center');
+    const ix = x + 18 + i * 30;
+    drawText(ctx, EMOJI[it.id], ix, y + 42, 20, '#ffffff', 'center');
     if (it.chopped) drawText(ctx, 'C', ix - 8, y + 26, 8, '#7fd3ff', 'center');
     if (it.cooked) drawText(ctx, '🔥', ix + 8, y + 26, 8, '#ff9a3c', 'center');
   });
@@ -304,12 +327,28 @@ function drawPlateStation(ctx, world) {
   const R = STATIONS.plate;
   drawBox(ctx, R.x, R.y, R.w, R.h, '#2c2c34', '#7d7d92');
   drawText(ctx, 'PLATE', R.x + R.w / 2, R.y + 18, 15, '#d6d6e6', 'center');
+  const cx = R.x + R.w / 2;
+  const cy = R.y + R.h / 2 + 12;
+  const radius = 42;
+  ctx.beginPath();
+  ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+  ctx.fillStyle = '#e8e4da';
+  ctx.fill();
+  ctx.strokeStyle = '#b8b0a0';
+  ctx.lineWidth = 3;
+  ctx.stroke();
   ctx.font = '26px serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  world.plate.forEach((item, i) => {
-    ctx.fillText(EMOJI[item.id] || '🍽', R.x + 40 + i * 32, R.y + 70);
-  });
+  if (world.plate.length === 0) {
+    ctx.fillText('🍽', cx, cy);
+  } else {
+    const bottomY = cy + 26;
+    world.plate.forEach((item, i) => {
+      const iy = bottomY - i * 13;
+      ctx.fillText(EMOJI[item.id] || '🍽', cx, iy);
+    });
+  }
 }
 
 function drawServeWindow(ctx, world) {
