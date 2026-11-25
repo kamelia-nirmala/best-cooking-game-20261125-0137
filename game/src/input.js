@@ -189,6 +189,10 @@ export function createInput(canvas, world, callbacks = {}) {
     if (key === 'm') {
       if (typeof cbs.onMute === 'function') cbs.onMute();
     }
+    if (key === 'r') {
+      if (typeof cbs.onRecipes === 'function') cbs.onRecipes();
+      return;
+    }
   }
 
   function onKeyUp(event) {
