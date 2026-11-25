@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dapur Sizzle - Cooking Game</title>
+<style>
+  :root {
+    color-scheme: dark;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: #140f0d;
+    background-image:
+      radial-gradient(circle at 50% 0%, rgba(255, 138, 64, 0.10), transparent 55%),
+      repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.018) 0px,
+        rgba(255, 255, 255, 0.018) 2px,
+        transparent 2px,
+        transparent 12px
+      ),
+      linear-gradient(180deg, #1a1310 0%, #0d0908 100%);
+    color: #e9dcd2;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
+  }
+
+  #game {
+    display: block;
+    width: 1280px;
+    max-width: 100%;
+    height: auto;
+    background-color: #1f1916;
+    border: 2px solid #3a2c25;
+    border-radius: 10px;
+    box-shadow:
+      0 0 0 1px rgba(255, 140, 70, 0.12),
+      0 18px 45px rgba(0, 0, 0, 0.65),
+      0 0 70px rgba(255, 120, 50, 0.07);
+    image-rendering: pixelated;
+    outline: none;
+    touch-action: none;
+  }
+
+  #game:focus-visible {
+    box-shadow:
+      0 0 0 2px rgba(255, 165, 90, 0.55),
+      0 18px 45px rgba(0, 0, 0, 0.65),
+      0 0 70px rgba(255, 120, 50, 0.12);
+  }
+
+  .controls {
+    margin: 0;
+    padding: 0 8px;
+    max-width: 1280px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: 0.3px;
+    color: #b9a494;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
+    user-select: none;
+  }
+
+  @media (max-width: 640px) {
+    body {
+      padding: 10px;
+      gap: 10px;
+    }
+
+    .controls {
+      font-size: 12px;
+    }
+  }
+</style>
+</head>
+<body>
+  <canvas id="game" width="1280" height="720" tabindex="0">
+    Your browser does not support the HTML5 canvas element required for Dapur Sizzle.
+  </canvas>
+  <p class="controls">WASD / arrows move, E use, P pause, M mute, Enter start</p>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
