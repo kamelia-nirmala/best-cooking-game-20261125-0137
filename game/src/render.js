@@ -1024,7 +1024,7 @@ export function drawOver(ctx, world, best = 0) {
   ctx.stroke();
 
   drawText(ctx, 'Main lagi', CANVAS_W / 2, 548, 18, '#2c2318', 'center');
-  drawText(ctx, 'Tekan Enter atau klik untuk main lagi', CANVAS_W / 2, 592, 13, '#ffd166', 'center');
+  drawText(ctx, 'Tekan Enter atau klik untuk main lagi', CANVAS_W / 2, 578, 13, '#ffd166', 'center');
 }
 
 function fitTitleText(text, base, maxWidth) {
