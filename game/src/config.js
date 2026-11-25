@@ -14,7 +14,7 @@ export const INGREDIENTS = [
 export const RECIPES = [
   {
     id: "sizzle-burger",
-    name: "Sizzle Burger",
+    name: "Burger Sambal",
     points: 120,
     items: [
       { id: "bun", cooked: false, chopped: false },
@@ -24,7 +24,7 @@ export const RECIPES = [
   },
   {
     id: "cheese-melt",
-    name: "Cheese Melt",
+    name: "Burger Keju",
     points: 100,
     items: [
       { id: "bun", cooked: false, chopped: false },
@@ -34,7 +34,7 @@ export const RECIPES = [
   },
   {
     id: "garden-salad",
-    name: "Garden Salad",
+    name: "Salad Kebun",
     points: 80,
     items: [
       { id: "lettuce", cooked: false, chopped: true },
@@ -44,7 +44,7 @@ export const RECIPES = [
   },
   {
     id: "sunny-omelette",
-    name: "Sunny Omelette",
+    name: "Omelet Matahari",
     points: 110,
     items: [
       { id: "egg", cooked: false, chopped: false },
@@ -54,7 +54,7 @@ export const RECIPES = [
   },
   {
     id: "double-stacker",
-    name: "Double Stacker",
+    name: "Burger Ganda",
     points: 180,
     items: [
       { id: "bun", cooked: false, chopped: false },
