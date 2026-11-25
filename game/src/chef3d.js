@@ -29,6 +29,7 @@ export function buildChef(scene) {
   const shadowMat = new THREE.MeshStandardMaterial({ color: 0x000000, transparent: true, opacity: 0.3 });
 
   const chef = new THREE.Group();
+  chef.scale.set(1.25, 1.25, 1.25);
   chef.name = 'chef';
 
   // Floor shadow
