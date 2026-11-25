@@ -84,62 +84,8 @@ export function draw(ctx, world, screen, best) {
 
   ctx.clearRect(0, 0, w, h);
 
-  // Warm kitchen floor base
-  ctx.fillStyle = '#2d221d';
-  ctx.fillRect(0, 0, w, h);
-
-  // Kitchen floor tiles
-  const tileSize = Math.max(34, Math.round(w / 22));
-  const cols = Math.ceil(w / tileSize);
-  const rows = Math.ceil(h / tileSize);
-
-  for (let row = 0; row < rows; row += 1) {
-    for (let col = 0; col < cols; col += 1) {
-      const x = col * tileSize;
-      const y = row * tileSize;
-      const alternate = (row + col) % 2 === 0;
-
-      ctx.fillStyle = alternate ? '#5a3d2b' : '#4e3423';
-      ctx.fillRect(x + 1, y + 1, tileSize - 2, tileSize - 2);
-
-      ctx.fillStyle = 'rgba(255, 224, 180, 0.035)';
-      ctx.fillRect(x + 3, y + 3, tileSize - 6, 2);
-
-      if (alternate) {
-        const diamondSize = tileSize * 0.22;
-        ctx.save();
-        ctx.translate(x + tileSize / 2, y + tileSize / 2);
-        ctx.rotate(Math.PI / 4);
-        ctx.fillStyle = 'rgba(255, 200, 140, 0.10)';
-        ctx.fillRect(-diamondSize / 2, -diamondSize / 2, diamondSize, diamondSize);
-        ctx.restore();
-      }
-    }
-  }
-
-  // Patterned border strip along the bottom edge
-  ctx.fillStyle = '#211713';
-  ctx.fillRect(0, h - 10, w, 10);
-
-  for (let bx = 14; bx < w; bx += 28) {
-    ctx.save();
-    ctx.translate(bx, h - 5);
-    ctx.rotate(Math.PI / 4);
-    ctx.fillStyle = '#c97b3f';
-    ctx.fillRect(-2.5, -2.5, 5, 5);
-    ctx.restore();
-  }
-
-  // Soft ambient shading over the floor
-  const floorShade = ctx.createLinearGradient(0, hudH, 0, h);
-  floorShade.addColorStop(0, 'rgba(255, 196, 120, 0.07)');
-  floorShade.addColorStop(0.55, 'rgba(255, 196, 120, 0)');
-  floorShade.addColorStop(1, 'rgba(0, 0, 0, 0.20)');
-
-  ctx.save();
-  ctx.fillStyle = floorShade;
-  ctx.fillRect(0, hudH, w, h - hudH);
-  ctx.restore();
+  // The 3D kitchen scene (three.js, WebGL canvas #gl) shows through here.
+  // This 2D canvas only draws the HUD, stations, chef, and overlays on top of it.
 
   // Top HUD bar
   drawBox(ctx, 0, 0, w, hudH, '#211713', '#c97b3f');
@@ -281,7 +227,25 @@ function drawBins(ctx) {
   BINS.forEach((id, i) => {
     const bx = b.x + pad + i * (bw + gap);
     const by = b.y + pad;
+
+    ctx.fillStyle = 'rgba(0,0,0,0.35)';
+    ctx.fillRect(bx + 3, by + 3, bw, bh);
+
     drawBox(ctx, bx, by, bw, bh, '#2f3852', '#4a5470');
+
+    ctx.fillStyle = 'rgba(255,255,255,0.18)';
+    ctx.fillRect(bx + 2, by + 2, bw - 4, 2);
+
+    const cx = bx + bw / 2;
+    const cy = by + 26;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 18, 0, Math.PI * 2);
+    ctx.fillStyle = '#232c44';
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#6b7a9e';
+    ctx.stroke();
+
     drawText(ctx, EMOJI[id], bx + bw / 2, by + 22, 20, '#ffffff', 'center');
     drawText(ctx, INGREDIENTS.find((ing) => ing.id === id).label, bx + bw / 2, by + bh - 8, 11, '#dfe6f5', 'center');
   });
@@ -497,7 +461,7 @@ function drawServeWindow(ctx, world) {
 function drawTrash(ctx) {
   const R = STATIONS.trash;
   drawBox(ctx, R.x, R.y, R.w, R.h, '#33222a', '#8a5560');
-  drawText(ctx, 'TRASH', R.x + R.w / 2, R.y + 24, 15, '#e6b8c0', 'center');
+  drawText(ctx, 'TRASH', R.x + R.w / 2, R.y + 18, 15, '#e6b8c0', 'center');
 
   const cx = R.x + R.w / 2;
   const topY = R.y + R.h * 0.42;
@@ -764,19 +728,26 @@ function drawDecorations(ctx) {
   ctx.fillStyle = '#e0453a'; ctx.beginPath(); ctx.arc(1218, 325, 5, 0, Math.PI * 2); ctx.fill();
   ctx.fillStyle = 'rgba(255, 255, 255, 0.45)'; ctx.beginPath(); ctx.arc(1216, 323, 2, 0, Math.PI * 2); ctx.fill();
 
-  // Long wooden work table in the middle-floor gap
-  ctx.fillStyle = '#6b4326'; ctx.fillRect(60, 480, 16, 38); ctx.fillRect(1200, 480, 16, 38);
-  ctx.fillStyle = '#5a371f'; ctx.fillRect(68, 480, 4, 38); ctx.fillRect(1208, 480, 4, 38);
+// Long wooden work table in the middle-floor gap
+  // Thicker legs
+  ctx.fillStyle = '#6b4326'; ctx.fillRect(60, 492, 20, 26); ctx.fillRect(1200, 492, 20, 26);
+  ctx.fillStyle = '#5a371f'; ctx.fillRect(76, 492, 4, 26); ctx.fillRect(1200, 492, 4, 26);
 
-  ctx.fillStyle = '#8a5a34'; ctx.fillRect(40, 458, 1200, 22);
-  ctx.fillStyle = '#a06b40'; ctx.fillRect(40, 458, 1200, 3);
-  ctx.fillStyle = '#5e3a1f'; ctx.fillRect(40, 475, 1200, 5);
+  // Lower shelf between the legs
+  ctx.fillStyle = '#7a4e2c'; ctx.fillRect(80, 500, 1120, 10);
+  ctx.fillStyle = '#5e3a1f'; ctx.fillRect(80, 508, 1120, 2);
 
-  // Subtle wood grain
+  // Thick table top
+  ctx.fillStyle = '#8a5a34'; ctx.fillRect(40, 452, 1200, 40);
+  ctx.fillStyle = '#a06b40'; ctx.fillRect(40, 452, 1200, 3);
+  ctx.fillStyle = '#5e3a1f'; ctx.fillRect(40, 487, 1200, 5);
+
+  // Wood grain
   ctx.strokeStyle = '#7a4e2c'; ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.moveTo(44, 465); ctx.lineTo(1236, 465);
+  ctx.moveTo(44, 461); ctx.lineTo(1236, 461);
   ctx.moveTo(44, 470); ctx.lineTo(1236, 470);
+  ctx.moveTo(44, 481); ctx.lineTo(1236, 481);
   ctx.stroke();
 
   // Chopping board on the table
@@ -798,8 +769,92 @@ function drawDecorations(ctx) {
   ctx.fillStyle = '#2f2c2a'; ctx.beginPath(); ctx.arc(715, 468, 11, 0, Math.PI * 2); ctx.fill();
   ctx.strokeStyle = '#5c5c62'; ctx.lineWidth = 2;
   ctx.beginPath(); ctx.arc(715, 468, 11, 0, Math.PI * 2); ctx.stroke();
+
+  // Three small spice bottles
+  const spiceBottles = [
+    { x: 850, body: '#c0392b' },
+    { x: 890, body: '#27ae60' },
+    { x: 930, body: '#d4a017' }
+  ];
+  for (const bottle of spiceBottles) {
+    ctx.fillStyle = bottle.body; ctx.fillRect(bottle.x, 474, 14, 18);
+    ctx.strokeStyle = 'rgba(0,0,0,0.35)'; ctx.lineWidth = 2;
+    ctx.strokeRect(bottle.x, 474, 14, 18);
+    ctx.fillStyle = '#2c2c2c'; ctx.fillRect(bottle.x, 470, 14, 4);
+    ctx.strokeStyle = 'rgba(0,0,0,0.5)'; ctx.lineWidth = 2;
+    ctx.strokeRect(bottle.x, 470, 14, 4);
+  }
+
+  // Folded napkin
+  ctx.fillStyle = '#e8dcc8'; ctx.fillRect(1020, 478, 60, 14);
+  ctx.strokeStyle = '#b9a88f'; ctx.lineWidth = 1; ctx.strokeRect(1020, 478, 60, 14);
+  ctx.fillStyle = '#c0392b'; ctx.fillRect(1020, 484, 60, 3);
+
+  // Frying pan on the table
+  ctx.fillStyle = '#2f2c2a'; ctx.beginPath(); ctx.arc(1120, 478, 14, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = '#5c5c62'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(1120, 478, 14, 0, Math.PI * 2); ctx.stroke();
+  ctx.fillStyle = '#2f2c2a'; ctx.fillRect(1134, 476, 24, 5);
   ctx.strokeStyle = '#2f2c2a'; ctx.lineWidth = 3;
   ctx.beginPath(); ctx.moveTo(704, 466); ctx.lineTo(699, 466); ctx.moveTo(726, 466); ctx.lineTo(731, 466); ctx.stroke();
+
+  // Ingredient basket
+  ctx.beginPath();
+  ctx.moveTo(235, 678);
+  ctx.lineTo(325, 678);
+  ctx.lineTo(315, 700);
+  ctx.lineTo(245, 700);
+  ctx.closePath();
+  ctx.fillStyle = '#8a5a34';
+  ctx.fill();
+  ctx.strokeStyle = '#5a3a20';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  ctx.strokeStyle = '#6b4326';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(239, 686);
+  ctx.lineTo(321, 686);
+  ctx.moveTo(243, 694);
+  ctx.lineTo(317, 694);
+  ctx.stroke();
+
+  ctx.fillStyle = '#e0402e';
+  ctx.beginPath();
+  ctx.arc(255, 672, 8, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#5aa64a';
+  ctx.beginPath();
+  ctx.arc(280, 668, 8, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#e67e22';
+  ctx.beginPath();
+  ctx.moveTo(305, 664);
+  ctx.lineTo(312, 674);
+  ctx.lineTo(298, 674);
+  ctx.closePath();
+  ctx.fill();
+
+  // Batik mat
+  ctx.beginPath();
+  ctx.ellipse(1020, 694, 55, 10, 0, 0, Math.PI * 2);
+  ctx.fillStyle = '#7a2a3a';
+  ctx.fill();
+  ctx.strokeStyle = '#d4a017';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  ctx.fillStyle = '#d4a017';
+  [995, 1020, 1045].forEach(function (x) {
+    ctx.save();
+    ctx.translate(x, 694);
+    ctx.rotate(Math.PI / 4);
+    ctx.fillRect(-2.5, -2.5, 5, 5);
+    ctx.restore();
+  });
 
   ctx.restore();
 }
@@ -879,15 +934,8 @@ export function drawRecipeBook(ctx, world) {
 
 function drawPlay(ctx, world) {
   drawOrderBoard(ctx, world);
-  drawBins(ctx);
-  drawChopStation(ctx, world);
-  drawGrillStation(ctx, world);
-  drawPlateStation(ctx, world);
-  drawServeWindow(ctx, world);
-  drawTrash(ctx);
-  drawDecorations(ctx);
-  drawChef(ctx, world);
-  drawStationLabels(ctx);
+  // The ingredient bins, the stations, the decorations, the station labels,
+  // and the chef are rendered as 3D objects (three.js) behind this canvas.
   drawMessage(ctx, world);
   drawScorePopup(ctx, world);
   drawFooter(ctx);
