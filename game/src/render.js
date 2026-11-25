@@ -941,7 +941,7 @@ function drawPlay(ctx, world) {
   drawFooter(ctx);
 }
 export function drawTitle(ctx, world, best = 0) {
-  ctx.fillStyle = '#141a26';
+  ctx.fillStyle = 'rgba(10, 12, 20, 0.72)';
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
   const cx = CANVAS_W / 2;
