@@ -56,6 +56,14 @@ const input = createInput(canvas, world, {
   },
   onMute() {
     audio.toggleMuted();
+  },
+  onRecipes() {
+    if (world.over) return;
+    if (screen === SCREEN_RECIPES) {
+      screen = SCREEN_PLAY;
+    } else if (screen === SCREEN_PLAY) {
+      screen = SCREEN_RECIPES;
+    }
   }
 });
 
