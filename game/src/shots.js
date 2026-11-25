@@ -134,7 +134,7 @@ export function setupShot(world, name) {
 
       world.plate = [makeItem('bun'), makeItem('patty', true), makeItem('patty', true), makeItem('lettuce', false, true)];
 
-      world.chef = { x: 860, y: 640 };
+      world.chef = { x: 740, y: 640, dir: 1, moving: false };
 
       world.message = 'Served! +180';
       world.messageT = 1.5;
