@@ -156,14 +156,15 @@ export function buildStations(scene) {
 
   // ---- GRILL ----
   const grill = stationGroup(scene, RECTS.grill);
-  box(grill.width3d, 0.95, grill.depth3d, 0, 0.475, 0, darkMetal, grill.group);
+  const grillBodyMat = new THREE.MeshStandardMaterial({ color: 0x6a6e74, roughness: 0.45, metalness: 0.55 });
+  box(grill.width3d, 0.95, grill.depth3d, 0, 0.475, 0, grillBodyMat, grill.group);
   const frontZ = grill.depth3d / 2 + 0.015;
   const gPanelW = Math.max(0.4, grill.width3d - 0.3);
-  box(gPanelW, 0.26, 0.06, 0, 0.35, frontZ, darkMetal, grill.group);
-  box(gPanelW, 0.26, 0.06, 0, 0.7, frontZ, darkMetal, grill.group);
+  box(gPanelW, 0.26, 0.06, 0, 0.35, frontZ, grillBodyMat, grill.group);
+  box(gPanelW, 0.26, 0.06, 0, 0.7, frontZ, grillBodyMat, grill.group);
   mesh(new THREE.SphereGeometry(0.05, 12, 10), gold, -gPanelW / 2 + 0.12, 0.35, grill.depth3d / 2 + 0.06, grill.group);
   mesh(new THREE.SphereGeometry(0.05, 12, 10), gold, -gPanelW / 2 + 0.12, 0.7, grill.depth3d / 2 + 0.06, grill.group);
-  const grillTopMat = new THREE.MeshStandardMaterial({ color: 0x1c1c1c, roughness: 0.5, metalness: 0.3 });
+  const grillTopMat = new THREE.MeshStandardMaterial({ color: 0x3a3a40, roughness: 0.5, metalness: 0.3 });
   box(grill.width3d + 0.24, 0.14, grill.depth3d + 0.24, 0, 1.02, 0, grillTopMat, grill.group);
   box(grill.width3d + 0.24, 0.04, grill.depth3d + 0.24, 0, 0.93, 0, gold, grill.group);
   box(grill.width3d + 0.24, 0.5, 0.08, 0, 1.29, -grill.depth3d / 2 + 0.04, backsplashMat, grill.group);
@@ -197,8 +198,10 @@ export function buildStations(scene) {
   buildCabinet(serve, cabinetWood, cabinetWoodDark);
   const bellX = serve.width3d / 2 - 0.5;
   const bellZ = -serve.depth3d / 2 + 0.4;
-  mesh(new THREE.SphereGeometry(0.28, 18, 14), gold, bellX, 1.35, bellZ, serve.group);
-  cyl(0.3, 0.3, 0.06, bellX, 1.12, bellZ, gold, serve.group, 20);
+  mesh(new THREE.SphereGeometry(0.42, 18, 14), gold, bellX, 1.45, bellZ, serve.group);
+  cyl(0.45, 0.45, 0.06, bellX, 1.15, bellZ, gold, serve.group, 20);
+  cyl(0.55, 0.55, 0.08, -0.8, 1.15, 0.3, white, serve.group, 24);
+  mesh(new THREE.SphereGeometry(0.12, 12, 10), cabinetGreen, -0.6, 1.22, 0.45, serve.group);
   box(0.12, 1.6, 0.12, -serve.width3d / 2 + 0.2, 1.9, -serve.depth3d / 2 + 0.1, darkMetal, serve.group);
   box(0.12, 1.6, 0.12, serve.width3d / 2 - 0.2, 1.9, -serve.depth3d / 2 + 0.1, darkMetal, serve.group);
   box(serve.width3d, 0.12, 0.12, 0, 2.7, -serve.depth3d / 2 + 0.1, darkMetal, serve.group);
