@@ -196,24 +196,24 @@ function drawOrderCard(ctx, order, x, y, w, h) {
   const barColor = p > 0.5 ? '#5ad17a' : p > 0.25 ? '#ffc93c' : '#ff4d4d';
   const textColor = p > 0.5 ? '#9fe0a0' : p > 0.25 ? '#ffd166' : '#ff5f5f';
   drawBox(ctx, x, y, w, h, '#2f3852', '#4a5470');
-  drawText(ctx, order.recipe.name, x + 10, y + 17, 15, '#f2f5ff', 'left');
-  drawText(ctx, formatTime(order.patience), x + w - 10, y + 17, 13, textColor, 'right');
+  drawText(ctx, order.recipe.name, x + 10, y + 14, 15, '#f2f5ff', 'left');
+  drawText(ctx, formatTime(order.patience), x + w - 10, y + 14, 13, textColor, 'right');
   order.recipe.items.forEach((it, i) => {
     const ix = x + 18 + i * 34;
-    drawText(ctx, EMOJI[it.id], ix, y + 42, 24, '#ffffff', 'center');
-    if (it.chopped) drawText(ctx, 'C', ix - 8, y + 32, 8, '#7fd3ff', 'center');
-    if (it.cooked) drawText(ctx, '🔥', ix + 8, y + 32, 8, '#ff9a3c', 'center');
+    drawText(ctx, EMOJI[it.id], ix, y + 36, 24, '#ffffff', 'center');
+    if (it.chopped) drawText(ctx, 'C', ix - 8, y + 26, 8, '#7fd3ff', 'center');
+    if (it.cooked) drawText(ctx, '🔥', ix + 8, y + 26, 8, '#ff9a3c', 'center');
   });
-  drawBox(ctx, x + 10, y + h - 14, w - 20, 8, '#141a26', '#3a4256');
-  drawBox(ctx, x + 10, y + h - 14, Math.max(2, (w - 20) * p), 8, barColor, null);
+  drawBox(ctx, x + 10, y + h - 12, w - 20, 6, '#141a26', '#3a4256');
+  drawBox(ctx, x + 10, y + h - 12, Math.max(2, (w - 20) * p), 6, barColor, null);
 }
 
 function drawOrderBoard(ctx, world) {
-  drawBox(ctx, 40, 86, 1200, 92, '#1b2233', '#3a4256');
+  drawBox(ctx, 40, 86, 1200, 70, '#1b2233', '#3a4256');
   drawText(ctx, 'ORDERS', 52, 138, 14, '#8fa1c7', 'left');
   const n = Math.min(4, world.orders.length);
   for (let i = 0; i < n; i++) {
-    drawOrderCard(ctx, world.orders[i], 150 + i * 270, 98, 250, 70);
+    drawOrderCard(ctx, world.orders[i], 150 + i * 270, 94, 250, 52);
   }
 }
 
@@ -882,7 +882,7 @@ export function drawRecipeBook(ctx, world) {
     'sunny-omelette': 'Omelet telur yang mengenyangkan.',
     'double-stacker': 'Burger ganda untuk yang lapar.',
   };
-  ctx.fillStyle = 'rgba(0,0,0,0.55)';
+  ctx.fillStyle = 'rgba(0,0,0,0.35)';
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
   drawBox(ctx, 90, 70, 1100, 580, '#2c2118', '#c97b3f');
 
@@ -941,7 +941,7 @@ function drawPlay(ctx, world) {
   drawFooter(ctx);
 }
 export function drawTitle(ctx, world, best = 0) {
-  ctx.fillStyle = 'rgba(10, 12, 20, 0.72)';
+  ctx.fillStyle = 'rgba(10, 12, 20, 0.45)';
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
   const cx = CANVAS_W / 2;
@@ -965,7 +965,7 @@ export function drawTitle(ctx, world, best = 0) {
 }
 
 export function drawOver(ctx, world, best = 0) {
-  ctx.fillStyle = 'rgba(0,0,0,0.62)';
+  ctx.fillStyle = 'rgba(0,0,0,0.40)';
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
   const panelX = 340;
