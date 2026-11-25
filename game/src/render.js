@@ -395,7 +395,8 @@ function drawMessage(ctx, world) {
   const w = 620;
   const h = 44;
   const x = (CANVAS_W - w) / 2;
-  const y = CANVAS_H - 110;
+  // Sit in the empty middle-floor gap between the station rows so it never covers the serve panel or the plate
+  const y = 463;
   ctx.globalAlpha = Math.min(1, world.messageT / 0.5);
   drawBox(ctx, x, y, w, h, 'rgba(0,0,0,0.82)', '#f0a63c');
   drawText(ctx, world.message, CANVAS_W / 2, y + h / 2, 18, '#ffe9c9', 'center');
