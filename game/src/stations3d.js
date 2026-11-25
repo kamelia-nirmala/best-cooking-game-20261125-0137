@@ -152,7 +152,7 @@ export function buildStations(scene) {
   const chopVeg = mesh(new THREE.SphereGeometry(0.32, 12, 10), new THREE.MeshStandardMaterial({ color: 0x7bc47f, roughness: 0.8 }), -0.4, 1.28, 0, chop.group);
   chopVeg.scale.set(1, 0.55, 1);
   chopVeg.visible = false;
-  const chopBadge = badge(chop.group, 0, 2.6, 0, 'POTONG');
+  const chopBadge = badge(chop.group, 0, 1.35, 1.7, 'POTONG');
 
   // ---- GRILL ----
   const grill = stationGroup(scene, RECTS.grill);
@@ -183,7 +183,7 @@ export function buildStations(scene) {
   pattyR.visible = false;
   cyl(0.12, 0.12, 0.1, -0.6, 1.1, grill.depth3d / 2 + 0.05, steel, grill.group);
   cyl(0.12, 0.12, 0.1, 0.6, 1.1, grill.depth3d / 2 + 0.05, steel, grill.group);
-  const grillBadge = badge(grill.group, 0, 2.6, 0, 'PANGGANG');
+  const grillBadge = badge(grill.group, 0, 1.35, 1.7, 'PANGGANG');
 
   const PLATE_COLORS = { bun: 0xe8b45a, patty: 0x8a4a2a, lettuce: 0x7bc47f, tomato: 0xe2543e, cheese: 0xffd166, egg: 0xf2c94c };
   // ---- PLATE ----
