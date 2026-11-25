@@ -219,8 +219,18 @@ export function draw(ctx, world, screen, best) {
       9
     );
 
+    const isComboFlash =
+      item.label === 'COMBO' &&
+      typeof wd.message === 'string' &&
+      wd.message.indexOf('Served!') === 0 &&
+      wd.messageT > 0;
+    const flashValueSize = isComboFlash
+      ? Math.min(30, fittedValueSize * 1.4)
+      : fittedValueSize;
+    const flashColor = isComboFlash ? '#ffe066' : item.color;
+
     drawText(ctx, item.label, centerX, labelY, fittedLabelSize, '#c8a98b', 'center');
-    drawText(ctx, item.value, centerX, valueY, fittedValueSize, item.color, 'center');
+    drawText(ctx, item.value, centerX, valueY, flashValueSize, flashColor, 'center');
   }
 
   if (screen === SCREEN_TITLE) {
@@ -403,6 +413,15 @@ function drawMessage(ctx, world) {
   ctx.globalAlpha = 1;
 }
 
+function drawScorePopup(ctx, world) {
+  if (!world.message || world.message.indexOf('Served!') !== 0 || world.messageT <= 0) return;
+  const text = world.message.replace('Served! ', '');
+  const y = 580 - (1.5 - world.messageT) * 40;
+  ctx.globalAlpha = Math.min(1, world.messageT / 0.5);
+  drawText(ctx, text, 975, y, 24, '#ffd166', 'center');
+  ctx.globalAlpha = 1;
+}
+
 function drawFooter(ctx) {
   drawText(ctx, 'WASD / arrows move, E use, P pause, M mute, Enter start', CANVAS_W / 2, CANVAS_H - 24, 13, '#9c9384', 'center');
 }
@@ -449,6 +468,7 @@ function drawPlay(ctx, world) {
   drawChef(ctx, world);
   drawStationLabels(ctx);
   drawMessage(ctx, world);
+  drawScorePopup(ctx, world);
   drawFooter(ctx);
 }
 export function drawTitle(ctx, world, best = 0) {
