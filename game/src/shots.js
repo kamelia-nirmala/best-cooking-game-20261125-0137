@@ -118,7 +118,7 @@ export function setupShot(world, name) {
       world.tray = [makeItem('bun')];
 
       world.chef.x = 485;
-      world.chef.y = 375;
+      world.chef.y = 445;
 
       if (world.orders[0]) {
         world.orders[0].patience = 45;
@@ -220,7 +220,7 @@ export function setupShot(world, name) {
 
       world.plate = [makeItem('bun'), makeItem('patty', true)];
       world.tray = [makeItem('lettuce', false, true)];
-      world.chef = { x: 485, y: 375 };
+      world.chef = { x: 485, y: 445 };
 
       if (world.orders[0]) {
         world.orders[0].patience = 8;
