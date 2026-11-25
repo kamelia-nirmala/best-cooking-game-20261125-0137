@@ -313,7 +313,7 @@ function drawServeWindow(ctx, world) {
   const R = STATIONS.serve;
   drawBox(ctx, R.x, R.y, R.w, R.h, '#20303a', '#5b8fa8');
   drawText(ctx, 'SERVE', R.x + R.w / 2, R.y + 26, 18, '#bfe4f5', 'center');
-  drawText(ctx, 'Served: ' + world.served, R.x + R.w / 2, R.y + 78, 22, '#ffffff', 'center');
+  drawText(ctx, 'Served: ' + world.served, R.x + R.w / 2, R.y + R.h - 22, 22, '#ffffff', 'center');
 }
 
 function drawTrash(ctx) {
@@ -377,8 +377,7 @@ function drawPlay(ctx, world) {
   drawFooter(ctx);
 }
 export function drawTitle(ctx, world, best = 0) {
-  drawPlay(ctx, world);
-  ctx.fillStyle = 'rgba(0,0,0,0.65)';
+  ctx.fillStyle = '#141a26';
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
   const cx = CANVAS_W / 2;
