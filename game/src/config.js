@@ -14,7 +14,7 @@ export const INGREDIENTS = [
 export const RECIPES = [
   {
     id: "sizzle-burger",
-    name: "Burger Sambal",
+    name: "Burger Sizzle",
     points: 120,
     items: [
       { id: "bun", cooked: false, chopped: false },
