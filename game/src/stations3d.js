@@ -207,7 +207,10 @@ export function buildStations(scene) {
   mesh(new THREE.SphereGeometry(0.42, 18, 14), gold, bellX, 1.45, bellZ, serve.group);
   cyl(0.45, 0.45, 0.06, bellX, 1.15, bellZ, gold, serve.group, 20);
   cyl(0.55, 0.55, 0.08, -0.8, 1.15, 0.3, white, serve.group, 24);
-  mesh(new THREE.SphereGeometry(0.12, 12, 10), cabinetGreen, -0.6, 1.22, 0.45, serve.group);
+  const serveLayer0 = mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.12, 20), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.7 }), -0.8, 1.22, 0.3, serve.group); serveLayer0.visible = false;
+  const serveLayer1 = mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.12, 20), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.7 }), -0.8, 1.34, 0.3, serve.group); serveLayer1.visible = false;
+  const serveLayer2 = mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.12, 20), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.7 }), -0.8, 1.46, 0.3, serve.group); serveLayer2.visible = false;
+  const serveLayer3 = mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.12, 20), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.7 }), -0.8, 1.58, 0.3, serve.group); serveLayer3.visible = false;
   box(0.12, 1.6, 0.12, -serve.width3d / 2 + 0.2, 1.9, -serve.depth3d / 2 + 0.1, darkMetal, serve.group);
   box(0.12, 1.6, 0.12, serve.width3d / 2 - 0.2, 1.9, -serve.depth3d / 2 + 0.1, darkMetal, serve.group);
   box(serve.width3d, 0.12, 0.12, 0, 2.7, -serve.depth3d / 2 + 0.1, darkMetal, serve.group);
@@ -268,6 +271,15 @@ export function buildStations(scene) {
         plateLayers[i].material.color.setHex(PLATE_COLORS[it.id] === undefined ? 0xcccccc : PLATE_COLORS[it.id]);
         plateLayers[i].scale.set(it.id === 'bun' ? 1.15 : 1, 1, it.id === 'bun' ? 1.15 : 1);
       } else { plateLayers[i].visible = false; }
+    }
+    const serveLayers = [serveLayer0, serveLayer1, serveLayer2, serveLayer3];
+    for (let i = 0; i < 4; i++) {
+      const it = plateItems[i];
+      if (it) {
+        serveLayers[i].visible = true;
+        serveLayers[i].material.color.setHex(PLATE_COLORS[it.id] === undefined ? 0xcccccc : PLATE_COLORS[it.id]);
+        serveLayers[i].scale.set(it.id === 'bun' ? 1.15 : 1, 1, it.id === 'bun' ? 1.15 : 1);
+      } else { serveLayers[i].visible = false; }
     }
   }
 
