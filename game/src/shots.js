@@ -30,6 +30,8 @@ export function setupShot(world, name) {
 
     case 'play': {
       world.reset();
+      world.spawnOrder();
+      world.spawnOrder();
       world.elapsed = 65;
       world.timeLeft = 85;
       world.level = 3;
@@ -64,6 +66,8 @@ export function setupShot(world, name) {
 
     case 'serve': {
       world.reset();
+      world.spawnOrder();
+      world.spawnOrder();
       world.elapsed = 100;
       world.timeLeft = 50;
       world.level = 4;
