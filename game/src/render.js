@@ -255,8 +255,8 @@ function drawOrderCard(ctx, order, x, y, w, h) {
   order.recipe.items.forEach((it, i) => {
     const ix = x + 18 + i * 34;
     drawText(ctx, EMOJI[it.id], ix, y + 42, 24, '#ffffff', 'center');
-    if (it.chopped) drawText(ctx, 'C', ix - 8, y + 26, 8, '#7fd3ff', 'center');
-    if (it.cooked) drawText(ctx, '🔥', ix + 8, y + 26, 8, '#ff9a3c', 'center');
+    if (it.chopped) drawText(ctx, 'C', ix - 8, y + 32, 8, '#7fd3ff', 'center');
+    if (it.cooked) drawText(ctx, '🔥', ix + 8, y + 32, 8, '#ff9a3c', 'center');
   });
   drawBox(ctx, x + 10, y + h - 14, w - 20, 8, '#141a26', '#3a4256');
   drawBox(ctx, x + 10, y + h - 14, Math.max(2, (w - 20) * p), 8, barColor, null);
@@ -745,7 +745,7 @@ export function drawRecipeBook(ctx, world) {
     }
   }
 
-  drawText(ctx, 'Tekan R atau Enter untuk kembali ke dapur', 640, 668, 16, '#8ef58e', 'center');
+  drawText(ctx, 'Tekan R untuk kembali ke dapur', 640, 668, 16, '#8ef58e', 'center');
 }
 
 function drawPlay(ctx, world) {
