@@ -76,7 +76,7 @@ export function setupShot(world, name) {
 
       world.tray = [makeItem('bun')];
 
-      world.chef.x = 485;
+      world.chef.x = 570;
       world.chef.y = 448;
 
       if (world.orders[0]) {
