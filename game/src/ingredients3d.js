@@ -65,7 +65,7 @@ function labelSprite(text) {
   ctx.strokeStyle = '#d4a017';
   ctx.lineWidth = 4;
   ctx.stroke();
-  ctx.font = 'bold 26px sans-serif';
+  ctx.font = 'bold 30px sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillStyle = '#ffd166';
@@ -74,11 +74,11 @@ function labelSprite(text) {
   const material = new THREE.SpriteMaterial({
     map: texture,
     transparent: true,
-    depthTest: false
+    depthTest: true
   });
   const sprite = new THREE.Sprite(material);
   sprite.scale.set(1.2, 0.3, 1);
-  sprite.renderOrder = 20;
+  sprite.renderOrder = -1;
   return sprite;
 }
 
