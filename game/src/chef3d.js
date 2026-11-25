@@ -174,7 +174,7 @@ export function buildChef(scene) {
   const trayItems = [];
   for (let i = 0; i < 3; i++) {
     const itemMat = new THREE.MeshStandardMaterial({ color: 0xe8b45a, roughness: 0.6 });
-    const item = makeMesh(new THREE.BoxGeometry(0.32, 0.24, 0.32), itemMat);
+    const item = makeMesh(new THREE.SphereGeometry(0.2, 16, 12), itemMat); item.scale.set(1, 0.6, 1);
     item.position.set(-0.28 + i * 0.28, 0.16, 0);
     item.visible = false;
     tray.add(item);
