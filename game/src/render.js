@@ -15,6 +15,7 @@ import {
 export const SCREEN_TITLE = 'title';
 export const SCREEN_PLAY = 'play';
 export const SCREEN_OVER = 'over';
+export const SCREEN_RECIPES = 'recipes';
 
 export const EMOJI = {
   bun: '🍞',
@@ -237,6 +238,8 @@ export function draw(ctx, world, screen, best) {
     drawTitle(ctx, world, best);
   } else if (screen === SCREEN_OVER) {
     drawOver(ctx, world, best);
+  } else if (screen === SCREEN_RECIPES) {
+    drawRecipeBook(ctx, world);
   } else {
     drawPlay(ctx, world);
   }
@@ -322,6 +325,13 @@ function drawGrillStation(ctx, world) {
       ctx.textBaseline = 'middle';
       ctx.fillText(EMOJI[slot.item.id] || '🍔', cx, cy + 1);
     }
+    if (slot.item && !slot.burnt) {
+      const drift = (world.elapsed * 12) % 10;
+      ctx.fillStyle = 'rgba(255,255,255,0.35)';
+      ctx.beginPath(); ctx.arc(cx - 6, cy - 34 - drift, 5, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(cx + 4, cy - 42 - drift, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(cx + 10, cy - 30 - drift, 3, 0, Math.PI * 2); ctx.fill();
+    }
     const p = slot.item ? Math.min(1, slot.t / GRILL_TIME) : 0;
     ctx.fillStyle = '#22201c';
     ctx.fillRect(cx - 28, cy + 30, 56, 7);
@@ -339,7 +349,11 @@ function drawPlateStation(ctx, world) {
   drawText(ctx, 'PLATE', R.x + R.w / 2, R.y + 18, 15, '#d6d6e6', 'center');
   const cx = R.x + R.w / 2;
   const cy = R.y + R.h / 2 + 12;
-  const radius = 42;
+  const radius = 54;
+  ctx.beginPath();
+  ctx.ellipse(cx, cy + radius + 6, radius + 6, 8, 0, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(0,0,0,0.25)';
+  ctx.fill();
   ctx.beginPath();
   ctx.arc(cx, cy, radius, 0, Math.PI * 2);
   ctx.fillStyle = '#e8e4da';
@@ -353,9 +367,10 @@ function drawPlateStation(ctx, world) {
   if (world.plate.length === 0) {
     ctx.fillText('🍽', cx, cy);
   } else {
-    const bottomY = cy + 26;
+    const bottomY = cy + 32;
     world.plate.forEach((item, i) => {
-      const iy = bottomY - i * 13;
+      const iy = bottomY - i * 16;
+      ctx.font = '32px serif';
       ctx.fillText(EMOJI[item.id] || '🍽', cx, iy);
     });
   }
@@ -377,27 +392,133 @@ function drawTrash(ctx) {
 function drawChef(ctx, world) {
   const x = world.chef.x;
   const y = world.chef.y;
+
+  // Shadow under the feet
   ctx.beginPath();
-  ctx.arc(x, y - 26, 14, 0, Math.PI * 2);
-  ctx.fillStyle = '#ffffff';
+  ctx.ellipse(x, y + 42, 26, 7, 0, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(0,0,0,0.30)';
   ctx.fill();
+
+  // Shoes
+  ctx.fillStyle = '#2b2b2b';
+  ctx.beginPath();
+  if (ctx.roundRect) {
+    ctx.roundRect(x - 16, y + 30, 14, 10, 3);
+  } else {
+    ctx.rect(x - 16, y + 30, 14, 10);
+  }
+  ctx.fill();
+  ctx.beginPath();
+  if (ctx.roundRect) {
+    ctx.roundRect(x + 2, y + 30, 14, 10, 3);
+  } else {
+    ctx.rect(x + 2, y + 30, 14, 10);
+  }
+  ctx.fill();
+
+  // Pants
+  drawBox(ctx, x - 15, y + 8, 30, 24, '#3a3f4a', '#2c3038');
+
+  // Jacket
+  drawBox(ctx, x - 19, y - 14, 38, 30, '#f5f5f0', '#c9c9c9');
+
+  // Apron (on top of jacket)
+  drawBox(ctx, x - 14, y - 6, 28, 32, '#e05a4f', '#a33b33');
+  ctx.fillStyle = '#f08070';
+  ctx.fillRect(x - 14, y - 6, 28, 5);
+
+  // Buttons
+  ctx.fillStyle = '#333333';
+  ctx.beginPath();
+  ctx.arc(x, y - 6, 2, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(x, y + 2, 2, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Collar
+  ctx.fillStyle = '#ffffff';
   ctx.strokeStyle = '#c9c9c9';
   ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(x - 8, y - 14);
+  ctx.lineTo(x - 2, y - 14);
+  ctx.lineTo(x - 8, y - 7);
+  ctx.closePath();
+  ctx.fill();
   ctx.stroke();
   ctx.beginPath();
-  ctx.arc(x, y - 8, 12, 0, Math.PI * 2);
+  ctx.moveTo(x + 8, y - 14);
+  ctx.lineTo(x + 2, y - 14);
+  ctx.lineTo(x + 8, y - 7);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+
+  // Hands
+  ctx.fillStyle = '#f2c48d';
+  ctx.beginPath();
+  ctx.arc(x - 22, y + 6, 5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(x + 22, y + 6, 5, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Face
+  ctx.beginPath();
+  ctx.arc(x, y - 26, 13, 0, Math.PI * 2);
   ctx.fillStyle = '#f2c48d';
   ctx.fill();
   ctx.strokeStyle = '#c9955f';
   ctx.lineWidth = 2;
   ctx.stroke();
-  drawBox(ctx, x - 17, y + 2, 34, 36, '#e05a4f', '#a33b33');
-  ctx.font = '20px serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  world.tray.forEach((item, i) => {
-    ctx.fillText(EMOJI[item.id] || '❓', x - ((world.tray.length - 1) * 24) / 2 + i * 24, y + 48);
+
+  // Eyes
+  ctx.fillStyle = '#222222';
+  ctx.beginPath();
+  ctx.arc(x - 5, y - 28, 2, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(x + 5, y - 28, 2, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Smile
+  ctx.beginPath();
+  ctx.arc(x, y - 22, 5, 0.15 * Math.PI, 0.85 * Math.PI);
+  ctx.strokeStyle = '#8a5a3b';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Toque base band
+  drawBox(ctx, x - 14, y - 46, 28, 10, '#ffffff', '#c9c9c9');
+
+  // Toque puffy top
+  ctx.fillStyle = '#ffffff';
+  ctx.strokeStyle = '#c9c9c9';
+  ctx.lineWidth = 2;
+  const puffs = [
+    [x - 9, y - 50],
+    [x, y - 54],
+    [x + 9, y - 50],
+  ];
+  puffs.forEach(([px, py]) => {
+    ctx.beginPath();
+    ctx.arc(px, py, 10, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
   });
+
+  // Tray items on the apron, below the hands, in front of the chef
+  if (world.tray && world.tray.length) {
+    ctx.font = '18px serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    const spacing = 22;
+    const startX = x - ((world.tray.length - 1) * spacing) / 2;
+    world.tray.forEach((item, i) => {
+      ctx.fillText(EMOJI[item.id] || '❓', startX + i * spacing, y + 16);
+    });
+  }
 }
 
 function drawMessage(ctx, world) {
@@ -457,6 +578,176 @@ function drawStationLabels(ctx) {
   drawText(ctx, 'TRASH', t.x + t.w / 2, t.y + t.h / 2, 15, '#e6b8c0', 'center');
 }
 
+function drawDecorations(ctx) {
+  ctx.save();
+
+  // (a) Flat woven runner rug in the middle-floor gap
+  var rugX = 40;
+  var rugY = 452;
+  var rugW = 1200;
+  var rugH = 66;
+
+  // Rug base
+  ctx.fillStyle = '#4e3423';
+  ctx.fillRect(rugX, rugY, rugW, rugH);
+
+  // Thin gold border
+  ctx.strokeStyle = '#c97b3f';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(rugX + 4, rugY + 4, rugW - 8, rugH - 8);
+
+  // Simple woven stripe pattern
+  var stripeColors = ['#5a3d2b', '#c97b3f', '#6b4a33', '#ffd166'];
+  var stripeCount = 12;
+  var stripeW = (rugW - 24) / stripeCount;
+  var i;
+  for (i = 0; i < stripeCount; i++) {
+    ctx.fillStyle = stripeColors[i % stripeColors.length];
+    ctx.fillRect(rugX + 12 + i * stripeW, rugY + 10, stripeW - 3, rugH - 20);
+  }
+
+  // Inner border lines
+  ctx.strokeStyle = '#ffd166';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(rugX + 10, rugY + 8, rugW - 20, rugH - 16);
+
+  // Flat floor mat (keset) below the serve panel
+  ctx.fillStyle = '#a8452e'; ctx.beginPath(); ctx.ellipse(850, 692, 150, 12, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#c0603f'; ctx.beginPath(); ctx.ellipse(850, 692, 132, 8, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#8f3a28'; ctx.beginPath(); ctx.ellipse(850, 692, 100, 4, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = '#6f2a1c'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(850, 692, 150, 12, 0, 0, Math.PI * 2); ctx.stroke();
+
+  // (b) Small potted plant bottom-left
+  // Pot
+  ctx.fillStyle = '#c97b3f';
+  ctx.beginPath();
+  ctx.moveTo(70, 684);
+  ctx.lineTo(120, 684);
+  ctx.lineTo(114, 706);
+  ctx.lineTo(76, 706);
+  ctx.closePath();
+  ctx.fill();
+
+  // Pot rim
+  ctx.fillStyle = '#a85f2c';
+  ctx.fillRect(66, 678, 58, 8);
+
+  // Dark soil
+  ctx.fillStyle = '#3a2416';
+  ctx.fillRect(72, 680, 46, 6);
+
+  // Leaves
+  ctx.fillStyle = '#5a7d4a';
+  ctx.beginPath();
+  ctx.arc(85, 661, 14, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(105, 656, 12, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#6b8f55';
+  ctx.beginPath();
+  ctx.arc(95, 646, 13, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(112, 668, 10, 0, Math.PI * 2);
+  ctx.fill();
+
+  // (c) Small potted plant bottom-right (mirrored)
+  // Pot
+  ctx.fillStyle = '#c97b3f';
+  ctx.beginPath();
+  ctx.moveTo(1160, 678);
+  ctx.lineTo(1210, 678);
+  ctx.lineTo(1204, 700);
+  ctx.lineTo(1166, 700);
+  ctx.closePath();
+  ctx.fill();
+
+  // Pot rim
+  ctx.fillStyle = '#a85f2c';
+  ctx.fillRect(1156, 672, 58, 8);
+
+  // Dark soil
+  ctx.fillStyle = '#3a2416';
+  ctx.fillRect(1162, 674, 46, 6);
+
+  // Leaves
+  ctx.fillStyle = '#5a7d4a';
+  ctx.beginPath();
+  ctx.arc(1175, 655, 14, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(1195, 650, 12, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#6b8f55';
+  ctx.beginPath();
+  ctx.arc(1185, 640, 13, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(1168, 662, 10, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.restore();
+}
+
+export function drawRecipeBook(ctx, world) {
+  const DISH_EMOJI = {
+    'sizzle-burger': '🍔',
+    'cheese-melt': '🧀',
+    'garden-salad': '🥗',
+    'sunny-omelette': '🍳',
+    'double-stacker': '🍔',
+  };
+  const ITEM_LABEL = {
+    bun: 'Roti',
+    patty: 'Daging',
+    lettuce: 'Selada',
+    tomato: 'Tomat',
+    cheese: 'Keju',
+    egg: 'Telur',
+  };
+
+  ctx.fillStyle = 'rgba(0,0,0,0.55)';
+  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+  drawBox(ctx, 90, 70, 1100, 580, '#2c2118', '#c97b3f');
+
+  drawText(ctx, 'BUKU RESEP', 640, 115, 34, '#ffd166', 'center');
+  drawText(ctx, 'Dapur Sizzle — 5 resep, sajikan sebelum waktu habis', 640, 148, 16, '#e8dcc8', 'center');
+
+  for (let i = 0; i < RECIPES.length; i++) {
+    const recipe = RECIPES[i];
+    const rowY = 185 + i * 90;
+
+    drawBox(ctx, 120, rowY, 1040, 84, '#3a2c20', '#6b4a33');
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = '44px serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(DISH_EMOJI[recipe.id] || '🍽️', 170, rowY + 42);
+
+    drawText(ctx, recipe.name, 210, rowY + 30, 24, '#f2f5ff', 'left');
+    drawText(ctx, recipe.points + ' poin', 210, rowY + 60, 16, '#ffd166', 'left');
+
+    for (let j = 0; j < recipe.items.length; j++) {
+      const item = recipe.items[j];
+      const x = 560 + j * 56;
+
+      drawText(ctx, EMOJI[item.id] || '•', x, rowY + 42, 28, '#ffffff', 'center');
+      drawText(ctx, ITEM_LABEL[item.id] || item.id, x, rowY + 68, 11, '#c8a98b', 'center');
+
+      if (item.cooked) {
+        drawText(ctx, '🔥', x + 18, rowY + 22, 10, '#ffb347', 'center');
+      }
+      if (item.chopped) {
+        drawText(ctx, 'C', x - 18, rowY + 22, 10, '#7fd3ff', 'center');
+      }
+    }
+  }
+
+  drawText(ctx, 'Tekan R atau Enter untuk kembali ke dapur', 640, 668, 16, '#8ef58e', 'center');
+}
+
 function drawPlay(ctx, world) {
   drawOrderBoard(ctx, world);
   drawBins(ctx);
@@ -465,6 +756,7 @@ function drawPlay(ctx, world) {
   drawPlateStation(ctx, world);
   drawServeWindow(ctx, world);
   drawTrash(ctx);
+  drawDecorations(ctx);
   drawChef(ctx, world);
   drawStationLabels(ctx);
   drawMessage(ctx, world);
@@ -496,23 +788,43 @@ export function drawTitle(ctx, world, best = 0) {
 }
 
 export function drawOver(ctx, world, best = 0) {
-  ctx.fillStyle = 'rgba(0,0,0,0.75)';
+  ctx.fillStyle = 'rgba(0,0,0,0.62)';
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
-  const cx = CANVAS_W / 2;
-  const maxW = CANVAS_W * 0.9;
-  const rows = [
-    ['SHIFT OVER', '#ff6b6b', 0.18, Math.min(CANVAS_W * 0.1, CANVAS_H * 0.13)],
-    [`Score: ${world.score}`, '#ffffff', 0.33, Math.min(CANVAS_W * 0.038, CANVAS_H * 0.052)],
-    [`Served: ${world.served}`, '#8ef58e', 0.43, Math.min(CANVAS_W * 0.034, CANVAS_H * 0.048)],
-    [`Failed: ${world.failed}`, '#ff9f43', 0.52, Math.min(CANVAS_W * 0.034, CANVAS_H * 0.048)],
-    [`Best combo: x${world.bestCombo}`, '#ffd166', 0.61, Math.min(CANVAS_W * 0.034, CANVAS_H * 0.048)],
-    [`Best: ${Math.max(best || 0, world.score || 0)}`, '#ffd166', 0.70, Math.min(CANVAS_W * 0.034, CANVAS_H * 0.048)],
-    ['Press Enter or click to play again', '#8ef58e', 0.85, Math.min(CANVAS_W * 0.036, CANVAS_H * 0.05)],
-  ];
+  const stars = world.score >= 500 ? 3 : world.score >= 300 ? 2 : world.score >= 100 ? 1 : 0;
 
-  for (const [text, color, fy, base] of rows) {
-    drawText(ctx, text, cx, CANVAS_H * fy, fitTitleText(text, base, maxW), color, 'center');
+  const titleBase = Math.min(CANVAS_W * 0.1, CANVAS_H * 0.13);
+  const titleSize = fitTitleText('SHIFT SELESAI', titleBase, CANVAS_W * 0.82);
+  drawText(ctx, 'SHIFT SELESAI', CANVAS_W / 2, CANVAS_H * 0.16, titleSize, '#ff6b6b', 'center');
+
+  for (let k = 0; k < 3; k++) {
+    const filled = k < stars;
+    drawText(
+      ctx,
+      filled ? '★' : '☆',
+      CANVAS_W / 2 + (k - 1) * 56,
+      CANVAS_H * 0.27,
+      44,
+      filled ? '#ffd166' : '#5a5a5a',
+      'center'
+    );
+  }
+
+  const rows = [
+    [`Skor: ${world.score}`, '#ffffff', 0.38],
+    [`Tersaji: ${world.served}`, '#8ef58e', 0.48],
+    [`Gagal: ${world.failed}`, '#ff9f43', 0.57],
+    [`Kombo terbaik: x${world.bestCombo}`, '#ffd166', 0.66],
+    [`Terbaik: ${Math.max(best || 0, world.score || 0)}`, '#ffd166', 0.75],
+    ['Tekan Enter atau klik untuk main lagi', '#8ef58e', 0.88],
+  ];
+  const rowBases = [0.052, 0.048, 0.048, 0.048, 0.048, 0.05];
+
+  for (let i = 0; i < rows.length; i++) {
+    const [text, color, fy] = rows[i];
+    const base = CANVAS_H * rowBases[i];
+    const size = fitTitleText(text, base, CANVAS_W * 0.8);
+    drawText(ctx, text, CANVAS_W / 2, CANVAS_H * fy, size, color, 'center');
   }
 }
 
