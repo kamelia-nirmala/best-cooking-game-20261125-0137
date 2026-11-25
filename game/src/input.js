@@ -68,6 +68,8 @@ function findStationCenterAt(x, y) {
 }
 
 function moveChefToward(chef, target, maxDistance) {
+  const oldX = chef.x;
+  const oldY = chef.y;
   const dx = target.x - chef.x;
   const dy = target.y - chef.y;
   const distance = Math.hypot(dx, dy);
@@ -81,6 +83,9 @@ function moveChefToward(chef, target, maxDistance) {
   chef.x = clamp(chef.x, MIN_X, MAX_X);
   chef.y = clamp(chef.y, MIN_Y, MAX_Y);
 
+  chef.dir = chef.x < oldX ? -1 : chef.x > oldX ? 1 : chef.dir;
+  chef.moving = chef.x !== oldX || chef.y !== oldY;
+
   const remainingX = target.x - chef.x;
   const remainingY = target.y - chef.y;
 
@@ -88,6 +93,8 @@ function moveChefToward(chef, target, maxDistance) {
 }
 
 function moveChefByKeys(chef, keys, maxDistance) {
+  const oldX = chef.x;
+  const oldY = chef.y;
   let dx = 0;
   let dy = 0;
 
@@ -96,7 +103,10 @@ function moveChefByKeys(chef, keys, maxDistance) {
   if (keys.has('a') || keys.has('arrowleft')) dx -= 1;
   if (keys.has('d') || keys.has('arrowright')) dx += 1;
 
-  if (dx === 0 && dy === 0) return;
+  if (dx === 0 && dy === 0) {
+    chef.moving = false;
+    return;
+  }
 
   const length = Math.hypot(dx, dy);
 
@@ -105,6 +115,9 @@ function moveChefByKeys(chef, keys, maxDistance) {
 
   chef.x = clamp(chef.x, MIN_X, MAX_X);
   chef.y = clamp(chef.y, MIN_Y, MAX_Y);
+
+  chef.dir = chef.x < oldX ? -1 : chef.x > oldX ? 1 : chef.dir;
+  chef.moving = chef.x !== oldX || chef.y !== oldY;
 }
 
 export function updateInput(input, dt) {
