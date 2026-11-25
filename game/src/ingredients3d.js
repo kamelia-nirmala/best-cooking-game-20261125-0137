@@ -65,7 +65,7 @@ function labelSprite(text) {
   ctx.strokeStyle = '#d4a017';
   ctx.lineWidth = 4;
   ctx.stroke();
-  ctx.font = 'bold 30px sans-serif';
+  ctx.font = 'bold 44px sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillStyle = '#ffd166';
@@ -77,7 +77,7 @@ function labelSprite(text) {
     depthTest: true
   });
   const sprite = new THREE.Sprite(material);
-  sprite.scale.set(1.2, 0.3, 1);
+  sprite.scale.set(2.4, 0.6, 1);
   sprite.renderOrder = -1;
   return sprite;
 }
@@ -173,7 +173,7 @@ export function buildIngredients(scene) {
     box(0.14, 0.14, 2.2, 1.23, 1.03, 0, crateWoodDark, group);
     addIngredient(kind, group, mats);
     const label = labelSprite(name);
-    label.position.set(0, 0.55, 1.15);
+    label.position.set(0, 1.9, 1.15);
     group.add(label);
   }
   function update(world, frame) {
