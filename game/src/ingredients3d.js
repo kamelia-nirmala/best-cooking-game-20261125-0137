@@ -77,7 +77,7 @@ function labelSprite(text) {
     depthTest: true
   });
   const sprite = new THREE.Sprite(material);
-  sprite.scale.set(2.4, 0.6, 1);
+  sprite.scale.set(1.8, 0.45, 1);
   sprite.renderOrder = -1;
   return sprite;
 }
@@ -151,6 +151,7 @@ export function buildIngredients(scene) {
     cheese: cheeseMat,
     egg: eggMat
   };
+  const allLabels = [];
   for (let i = 0; i < INGREDIENTS.length; i++) {
     const kind = INGREDIENTS[i][0];
     const name = INGREDIENTS[i][1];
@@ -173,10 +174,13 @@ export function buildIngredients(scene) {
     box(0.14, 0.14, 2.2, 1.23, 1.03, 0, crateWoodDark, group);
     addIngredient(kind, group, mats);
     const label = labelSprite(name);
-    label.position.set(0, 1.9, 1.15);
+    label.position.set(0, 2.3, 1.15);
     group.add(label);
+    allLabels.push(label);
   }
   function update(world, frame) {
+    const showLabels = !(world && (world.screen === 'recipes' || world.screen === 'over'));
+    for (const s of allLabels) { s.visible = showLabels; }
   }
   return { update };
 }
