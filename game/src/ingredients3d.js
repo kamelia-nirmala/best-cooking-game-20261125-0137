@@ -175,6 +175,7 @@ export function buildIngredients(scene) {
     addIngredient(kind, group, mats);
     const label = labelSprite(name);
     label.position.set(0, 1.25, 1.15);
+    if (i < 4) { label.material.depthTest = false; label.renderOrder = 11; }
     group.add(label);
     allLabels.push(label);
   }
