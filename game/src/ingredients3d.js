@@ -174,7 +174,7 @@ export function buildIngredients(scene) {
     box(0.14, 0.14, 2.2, 1.23, 1.03, 0, crateWoodDark, group);
     addIngredient(kind, group, mats);
     const label = labelSprite(name);
-    label.position.set(0, 2.3, 1.15);
+    label.position.set(0, 3.0, 1.15);
     group.add(label);
     allLabels.push(label);
   }
