@@ -1,6 +1,6 @@
 import { CANVAS_W, CANVAS_H } from './config.js';
 import { createWorld } from './world.js';
-import { draw, SCREEN_TITLE, SCREEN_PLAY, SCREEN_OVER } from './render.js';
+import { draw, SCREEN_TITLE, SCREEN_PLAY, SCREEN_OVER, SCREEN_RECIPES } from './render.js';
 import { createInput, updateInput } from './input.js';
 import { createAudio } from './audio.js';
 import { setupShot, SHOT_NAMES } from './shots.js';
@@ -107,6 +107,10 @@ if (shot && shotNames.includes(shot)) {
   if (shot === 'title') {
     screen = SCREEN_TITLE;
   } else if (shot === 'end') {
+    screen = SCREEN_OVER;
+  } else if (shot === 'recipes') {
+    screen = SCREEN_RECIPES;
+  } else if (shot === 'results') {
     screen = SCREEN_OVER;
   } else {
     screen = SCREEN_PLAY;
