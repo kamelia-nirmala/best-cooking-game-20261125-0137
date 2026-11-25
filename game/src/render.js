@@ -135,7 +135,7 @@ export function draw(ctx, world, screen, best) {
 
   const statsLeft = titleMaxW + 12;
   const statsRight = w - 10;
-  const statW = Math.max(42, (statsRight - statsLeft) / 6);
+  const statW = Math.max(42, (statsRight - statsLeft) / 5);
   const statMaxTextW = Math.max(24, statW - 12);
 
   const rawTime = Number(wd.timeLeft);
@@ -145,15 +145,15 @@ export function draw(ctx, world, screen, best) {
 
   const bestNumber = Number(best);
   const worldBestNumber = Number(wd.best);
-  const bestValue = Number.isFinite(bestNumber)
+  let bestValue = Number.isFinite(bestNumber)
     ? bestNumber
     : Number.isFinite(worldBestNumber)
       ? worldBestNumber
       : 0;
+  bestValue = Math.max(bestValue, Number(wd.score) || 0);
 
   const stats = [
     { label: 'SCORE', value: String(wd.score ?? 0), color: '#fff1d6' },
-    { label: 'COINS', value: String(wd.coins ?? 0), color: '#ffd166' },
     { label: 'COMBO', value: `x${wd.combo ?? 0}`, color: '#ffb86b' },
     { label: 'LEVEL', value: String(wd.level ?? 1), color: '#e9d6bb' },
     {
@@ -168,6 +168,7 @@ export function draw(ctx, world, screen, best) {
   const valueY = hudH * 0.69;
   const labelSize = Math.max(8, Math.min(10, Math.round(hudH * 0.15)));
   const valueMaxSize = Math.max(12, Math.min(19, Math.round(hudH * 0.28)));
+  const timerValueMaxSize = Math.min(30, valueMaxSize * 1.6);
 
   for (let i = 0; i < stats.length; i += 1) {
     const cellX = statsLeft + statW * i;
@@ -186,11 +187,12 @@ export function draw(ctx, world, screen, best) {
       labelSize,
       7
     );
+    const maxValueSize = item.label === 'TIMER' ? timerValueMaxSize : valueMaxSize;
     const fittedValueSize = fitTextSize(
       ctx,
       item.value,
       statMaxTextW,
-      valueMaxSize,
+      maxValueSize,
       9
     );
 
@@ -208,19 +210,20 @@ export function draw(ctx, world, screen, best) {
 }
 
 function drawOrderCard(ctx, order, x, y, w, h) {
+  const p = Math.max(0, Math.min(1, order.patience / order.maxPatience));
+  const barColor = p > 0.5 ? '#5ad17a' : p > 0.25 ? '#ffc93c' : '#ff4d4d';
+  const textColor = p > 0.5 ? '#9fe0a0' : p > 0.25 ? '#ffd166' : '#ff5f5f';
   drawBox(ctx, x, y, w, h, '#2f3852', '#4a5470');
-  const low = order.patience < 10;
   drawText(ctx, order.recipe.name, x + 10, y + 17, 13, '#f2f5ff', 'left');
-  drawText(ctx, formatTime(order.patience), x + w - 10, y + 17, 12, low ? '#ff5f5f' : '#9fe0a0', 'right');
+  drawText(ctx, formatTime(order.patience), x + w - 10, y + 17, 12, textColor, 'right');
   order.recipe.items.forEach((it, i) => {
     const ix = x + 18 + i * 26;
     drawText(ctx, EMOJI[it.id], ix, y + 42, 16, '#ffffff', 'center');
     if (it.chopped) drawText(ctx, 'C', ix - 8, y + 26, 8, '#7fd3ff', 'center');
     if (it.cooked) drawText(ctx, '🔥', ix + 8, y + 26, 8, '#ff9a3c', 'center');
   });
-  const p = Math.max(0, Math.min(1, order.patience / order.maxPatience));
   drawBox(ctx, x + 10, y + h - 14, w - 20, 8, '#141a26', '#3a4256');
-  drawBox(ctx, x + 10, y + h - 14, Math.max(2, (w - 20) * p), 8, low ? '#ff4d4d' : '#5ad17a', null);
+  drawBox(ctx, x + 10, y + h - 14, Math.max(2, (w - 20) * p), 8, barColor, null);
 }
 
 function drawOrderBoard(ctx, world) {
@@ -364,6 +367,37 @@ function drawFooter(ctx) {
   drawText(ctx, 'WASD / arrows move, E use, P pause, M mute, Enter start', CANVAS_W / 2, CANVAS_H - 24, 13, '#9c9384', 'center');
 }
 
+function drawStationLabels(ctx) {
+  drawText(ctx, 'ORDERS', 52, 138, 14, '#8fa1c7', 'left');
+
+  const b = STATIONS.bins;
+  const gap = 8;
+  const pad = 10;
+  const bw = (b.w - pad * 2 - gap * (BINS.length - 1)) / BINS.length;
+  const bh = b.h - pad * 2;
+  for (let i = 0; i < BINS.length; i++) {
+    const id = BINS[i];
+    const bx = b.x + pad + i * (bw + gap);
+    const by = b.y + pad;
+    drawText(ctx, INGREDIENTS.find((ing) => ing.id === id).label, bx + bw / 2, by + bh - 8, 11, '#dfe6f5', 'center');
+  }
+
+  const s = STATIONS.chop;
+  drawText(ctx, 'CHOP', s.x + s.w / 2, s.y + 24, 15, '#dfe6f5', 'center');
+
+  const g = STATIONS.grill;
+  drawText(ctx, 'GRILL', g.x + g.w / 2, g.y + 18, 15, '#ffcf9a', 'center');
+
+  const p = STATIONS.plate;
+  drawText(ctx, 'PLATE', p.x + p.w / 2, p.y + 18, 15, '#d6d6e6', 'center');
+
+  const sv = STATIONS.serve;
+  drawText(ctx, 'SERVE', sv.x + sv.w / 2, sv.y + 26, 18, '#bfe4f5', 'center');
+
+  const t = STATIONS.trash;
+  drawText(ctx, 'TRASH', t.x + t.w / 2, t.y + t.h / 2, 15, '#e6b8c0', 'center');
+}
+
 function drawPlay(ctx, world) {
   drawOrderBoard(ctx, world);
   drawBins(ctx);
@@ -373,6 +407,7 @@ function drawPlay(ctx, world) {
   drawServeWindow(ctx, world);
   drawTrash(ctx);
   drawChef(ctx, world);
+  drawStationLabels(ctx);
   drawMessage(ctx, world);
   drawFooter(ctx);
 }
