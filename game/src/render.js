@@ -581,111 +581,126 @@ function drawStationLabels(ctx) {
 function drawDecorations(ctx) {
   ctx.save();
 
-  // (a) Flat woven runner rug in the middle-floor gap
-  var rugX = 40;
-  var rugY = 452;
-  var rugW = 1200;
-  var rugH = 66;
-
-  // Rug base
-  ctx.fillStyle = '#4e3423';
-  ctx.fillRect(rugX, rugY, rugW, rugH);
-
-  // Thin gold border
-  ctx.strokeStyle = '#c97b3f';
-  ctx.lineWidth = 2;
-  ctx.strokeRect(rugX + 4, rugY + 4, rugW - 8, rugH - 8);
-
-  // Simple woven stripe pattern
-  var stripeColors = ['#5a3d2b', '#c97b3f', '#6b4a33', '#ffd166'];
-  var stripeCount = 12;
-  var stripeW = (rugW - 24) / stripeCount;
-  var i;
-  for (i = 0; i < stripeCount; i++) {
-    ctx.fillStyle = stripeColors[i % stripeColors.length];
-    ctx.fillRect(rugX + 12 + i * stripeW, rugY + 10, stripeW - 3, rugH - 20);
-  }
-
-  // Inner border lines
-  ctx.strokeStyle = '#ffd166';
-  ctx.lineWidth = 1;
-  ctx.strokeRect(rugX + 10, rugY + 8, rugW - 20, rugH - 16);
-
   // Flat floor mat (keset) below the serve panel
   ctx.fillStyle = '#a8452e'; ctx.beginPath(); ctx.ellipse(850, 692, 150, 12, 0, 0, Math.PI * 2); ctx.fill();
   ctx.fillStyle = '#c0603f'; ctx.beginPath(); ctx.ellipse(850, 692, 132, 8, 0, 0, Math.PI * 2); ctx.fill();
   ctx.fillStyle = '#8f3a28'; ctx.beginPath(); ctx.ellipse(850, 692, 100, 4, 0, 0, Math.PI * 2); ctx.fill();
   ctx.strokeStyle = '#6f2a1c'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(850, 692, 150, 12, 0, 0, Math.PI * 2); ctx.stroke();
 
-  // (b) Small potted plant bottom-left
-  // Pot
-  ctx.fillStyle = '#c97b3f';
-  ctx.beginPath();
-  ctx.moveTo(70, 684);
-  ctx.lineTo(120, 684);
-  ctx.lineTo(114, 706);
-  ctx.lineTo(76, 706);
-  ctx.closePath();
-  ctx.fill();
+  // Left potted plant
+  ctx.fillStyle = '#c97b3f'; ctx.beginPath(); ctx.moveTo(70, 684); ctx.lineTo(120, 684); ctx.lineTo(114, 706); ctx.lineTo(76, 706); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#a85f2c'; ctx.fillRect(66, 678, 58, 8);
+  ctx.fillStyle = '#3a2416'; ctx.fillRect(72, 680, 46, 6);
+  ctx.fillStyle = '#5a7d4a'; ctx.beginPath(); ctx.arc(85, 661, 14, 0, Math.PI * 2); ctx.fill(); ctx.beginPath(); ctx.arc(105, 656, 12, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#6b8f55'; ctx.beginPath(); ctx.arc(95, 646, 13, 0, Math.PI * 2); ctx.fill(); ctx.beginPath(); ctx.arc(112, 668, 10, 0, Math.PI * 2); ctx.fill();
 
-  // Pot rim
-  ctx.fillStyle = '#a85f2c';
-  ctx.fillRect(66, 678, 58, 8);
+  // Right potted plant
+  ctx.fillStyle = '#c97b3f'; ctx.beginPath(); ctx.moveTo(1160, 678); ctx.lineTo(1210, 678); ctx.lineTo(1204, 700); ctx.lineTo(1166, 700); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#a85f2c'; ctx.fillRect(1156, 672, 58, 8);
+  ctx.fillStyle = '#3a2416'; ctx.fillRect(1162, 674, 46, 6);
+  ctx.fillStyle = '#5a7d4a'; ctx.beginPath(); ctx.arc(1175, 655, 14, 0, Math.PI * 2); ctx.fill(); ctx.beginPath(); ctx.arc(1195, 650, 12, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#6b8f55'; ctx.beginPath(); ctx.arc(1185, 640, 13, 0, Math.PI * 2); ctx.fill(); ctx.beginPath(); ctx.arc(1168, 662, 10, 0, Math.PI * 2); ctx.fill();
 
-  // Dark soil
-  ctx.fillStyle = '#3a2416';
-  ctx.fillRect(72, 680, 46, 6);
+  // Menu board on the right wall, right of the bins and above the oven
+  ctx.fillStyle = '#5a3a20'; ctx.fillRect(1040, 185, 200, 85);
+  ctx.fillStyle = '#2b1a10'; ctx.fillRect(1048, 193, 184, 69);
+  ctx.strokeStyle = '#7a4a28'; ctx.lineWidth = 2; ctx.strokeRect(1040, 185, 200, 85);
 
-  // Leaves
-  ctx.fillStyle = '#5a7d4a';
+  // Fake menu text lines
+  ctx.strokeStyle = '#e8d5a8'; ctx.lineWidth = 2;
   ctx.beginPath();
-  ctx.arc(85, 661, 14, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(105, 656, 12, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = '#6b8f55';
-  ctx.beginPath();
-  ctx.arc(95, 646, 13, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(112, 668, 10, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.moveTo(1060, 210); ctx.lineTo(1118, 210);
+  ctx.moveTo(1060, 226); ctx.lineTo(1110, 226);
+  ctx.moveTo(1060, 242); ctx.lineTo(1122, 242);
+  ctx.stroke();
 
-  // (c) Small potted plant bottom-right (mirrored)
-  // Pot
-  ctx.fillStyle = '#c97b3f';
-  ctx.beginPath();
-  ctx.moveTo(1160, 678);
-  ctx.lineTo(1210, 678);
-  ctx.lineTo(1204, 700);
-  ctx.lineTo(1166, 700);
-  ctx.closePath();
-  ctx.fill();
+  // Small chalk burger drawing
+  ctx.beginPath(); ctx.arc(1190, 216, 15, Math.PI, 0); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(1175, 220); ctx.lineTo(1205, 220); ctx.stroke();
+  ctx.beginPath(); ctx.arc(1190, 228, 15, 0, Math.PI); ctx.stroke();
 
-  // Pot rim
-  ctx.fillStyle = '#a85f2c';
-  ctx.fillRect(1156, 672, 58, 8);
+  // Wall rack with jars above the oven
+  ctx.fillStyle = '#8a5a34'; ctx.fillRect(1040, 280, 200, 18);
+  ctx.fillStyle = '#5a3a20'; ctx.fillRect(1040, 296, 200, 4);
 
-  // Dark soil
-  ctx.fillStyle = '#3a2416';
-  ctx.fillRect(1162, 674, 46, 6);
+  var jarXs = [1070, 1140, 1210];
+  var jarColors = ['#c94f45', '#6b8f55', '#d9a33a'];
+  var j;
+  for (j = 0; j < 3; j++) {
+    ctx.fillStyle = jarColors[j];
+    ctx.beginPath(); ctx.arc(jarXs[j], 272, 10, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.28)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(jarXs[j], 272, 10, 0, Math.PI * 2); ctx.stroke();
+    ctx.fillStyle = '#d8d2c4'; ctx.fillRect(jarXs[j] - 8, 258, 16, 5);
+    ctx.strokeStyle = '#8f8878'; ctx.lineWidth = 1; ctx.strokeRect(jarXs[j] - 8, 258, 16, 5);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
+    ctx.beginPath(); ctx.arc(jarXs[j] - 3, 269, 3, 0, Math.PI * 2); ctx.fill();
+  }
 
-  // Leaves
-  ctx.fillStyle = '#5a7d4a';
+  // Stove / oven on the right wall
+  ctx.fillStyle = '#2b2b30'; ctx.fillRect(1040, 300, 200, 130);
+  ctx.strokeStyle = '#17171a'; ctx.lineWidth = 2; ctx.strokeRect(1040, 300, 200, 130);
+  ctx.fillStyle = '#3a3a42'; ctx.fillRect(1040, 300, 200, 16);
+
+  // Two burner circles on top
+  ctx.strokeStyle = '#0f0f12'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(1090, 310, 8, 0, Math.PI * 2); ctx.stroke();
+  ctx.beginPath(); ctx.arc(1160, 310, 8, 0, Math.PI * 2); ctx.stroke();
+  ctx.strokeStyle = '#55555e'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.arc(1090, 310, 4, 0, Math.PI * 2); ctx.stroke();
+  ctx.beginPath(); ctx.arc(1160, 310, 4, 0, Math.PI * 2); ctx.stroke();
+
+  // Oven door and lighter window
+  ctx.fillStyle = '#1b1b1f'; ctx.fillRect(1055, 335, 170, 80);
+  ctx.fillStyle = '#4b4f55'; ctx.fillRect(1060, 340, 160, 70);
+  ctx.strokeStyle = '#121215'; ctx.lineWidth = 2; ctx.strokeRect(1060, 340, 160, 70);
+  ctx.strokeStyle = '#646a72'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(1068, 404); ctx.lineTo(1112, 348); ctx.stroke();
+
+  // Oven handle
+  ctx.strokeStyle = '#9a9aa2'; ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.moveTo(1070, 331); ctx.lineTo(1210, 331); ctx.stroke();
+
+  // Small red indicator light
+  ctx.fillStyle = '#e0453a'; ctx.beginPath(); ctx.arc(1218, 325, 5, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.45)'; ctx.beginPath(); ctx.arc(1216, 323, 2, 0, Math.PI * 2); ctx.fill();
+
+  // Long wooden work table in the middle-floor gap
+  ctx.fillStyle = '#6b4326'; ctx.fillRect(60, 480, 16, 38); ctx.fillRect(1200, 480, 16, 38);
+  ctx.fillStyle = '#5a371f'; ctx.fillRect(68, 480, 4, 38); ctx.fillRect(1208, 480, 4, 38);
+
+  ctx.fillStyle = '#8a5a34'; ctx.fillRect(40, 458, 1200, 22);
+  ctx.fillStyle = '#a06b40'; ctx.fillRect(40, 458, 1200, 3);
+  ctx.fillStyle = '#5e3a1f'; ctx.fillRect(40, 475, 1200, 5);
+
+  // Subtle wood grain
+  ctx.strokeStyle = '#7a4e2c'; ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.arc(1175, 655, 14, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(1195, 650, 12, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = '#6b8f55';
-  ctx.beginPath();
-  ctx.arc(1185, 640, 13, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(1168, 662, 10, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.moveTo(44, 465); ctx.lineTo(1236, 465);
+  ctx.moveTo(44, 470); ctx.lineTo(1236, 470);
+  ctx.stroke();
+
+  // Chopping board on the table
+  ctx.fillStyle = '#d2a86e'; ctx.fillRect(200, 462, 120, 14);
+  ctx.strokeStyle = '#8a5a34'; ctx.lineWidth = 2; ctx.strokeRect(200, 462, 120, 14);
+
+  // Small knife on the chopping board
+  ctx.strokeStyle = '#c9ccd2'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(228, 469); ctx.lineTo(278, 469); ctx.stroke();
+  ctx.strokeStyle = '#3a3a3e'; ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.moveTo(278, 469); ctx.lineTo(296, 469); ctx.stroke();
+
+  // Stack of bowls
+  ctx.strokeStyle = '#e8dcc8'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(520, 460, 15, 0, Math.PI); ctx.stroke();
+  ctx.beginPath(); ctx.arc(520, 456, 10, 0, Math.PI); ctx.stroke();
+
+  // Small pot on the table
+  ctx.fillStyle = '#2f2c2a'; ctx.beginPath(); ctx.arc(715, 468, 11, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = '#5c5c62'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(715, 468, 11, 0, Math.PI * 2); ctx.stroke();
+  ctx.strokeStyle = '#2f2c2a'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(704, 466); ctx.lineTo(699, 466); ctx.moveTo(726, 466); ctx.lineTo(731, 466); ctx.stroke();
 
   ctx.restore();
 }
